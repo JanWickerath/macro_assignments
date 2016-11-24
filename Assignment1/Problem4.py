@@ -28,9 +28,14 @@ def dell_u_trans(cons, hours, psi):
     return(1 / (cons - hours**(1 + psi) / (1 + psi)))
 
 def foc(gov_policies, psi, sig, start=0, end=10):
+    # Initialize local variables for government policies for better
+    # readability.
     tax = gov_policies[0]
     trans = gov_policies[1]
     lam = gov_policies[2]
+    result = []
+
+    # Compute different parts of first FOC (respect tax rate) and combine
     part_a = integrate.quad(
         lambda w: dell_u_tax(w, cons(w, tax, psi, trans),
                              hours(w, tax, psi), psi, tax) * lognorm.pdf(
@@ -38,10 +43,22 @@ def foc(gov_policies, psi, sig, start=0, end=10):
         0, 10                   # set integration borders
     )[0]
     part_b = integrate.quad(
-        lambda w: w * hours(w, tax, psi), 0, 10
+        lambda w: w * hours(w, tax, psi), start, end
     )[0]
 
-    return part_a + lam * part_b
+    # Store first foc in results vector
+    result.append(part_a + lam * part_b)
+
+    # Compute first part of the second FOC (respect transfers)
+    part_c = integrate.quad(
+        lambda w: lognorm.pdf(w, s=sig, scale=np.exp(-sig**2 / 2)) *
+        dell_u_trans(cons(w, tax, psi, trans), hours(w, tax, psi), psi),
+        start, end
+    )[0]
+    result.append(part_c - lam)
+
+    return result
+
 
 print(foc([0.5, 0.5, 1], 2, 0.5))
 
