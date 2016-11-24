@@ -21,4 +21,10 @@ for tau = TaxRates
     policy(idx, :) = fsolve(focForTau, [.5, .5]);
     idx = idx + 1;
 end
-policy
+
+% Plot results
+fig = figure();
+subplot(1, 2, 1)
+plot(TaxRates, policy(:, 1))
+subplot(1, 2, 2)
+plot(TaxRates, policy(:, 2))

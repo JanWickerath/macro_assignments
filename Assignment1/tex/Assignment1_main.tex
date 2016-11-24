@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\usepackage{mystyle}
+
+\begin{document}
+\section*{Problem 1}
+\paragraph{1.}
+Note that you can write $c^{1 - \sigma}$ as $\exp\left(\ln c^{1 - \sigma}\right) = \exp\left(\left[1 - \sigma\right] \ln \left(c \right) \right)$. Hence:
+\begin{equation*}
+\lim_{\sigma \to 1} \frac{c^{1 - \sigma} - 1}{1 - \sigma} = \lim_{\sigma \to 1} \frac{\exp\left(\left[1 - \sigma\right] \ln \left(c \right) \right)}{1 - \sigma}
+\end{equation*}
+As numerator and denominator both go to $0$ as $\sigma $ approaches $1$ we can apply L'Hopital's Rule to compute the limit:
+\begin{align*}
+\lim_{\sigma \to 1} \frac{\exp\left(\ln\left[\left(1 - \sigma\right) c\right]\right)}{1 - \sigma} &= \lim_{\sigma \to 1} \frac{\exp\left[\left(1 - \sigma\right) \ln \left(c \right) \right] \left(-\sigma\right) \ln\left(c\right)}{-1} \\
+ &= \lim_{\sigma \to 1} \exp\left[\left(1 - \sigma\right) \ln\left(c\right)\right] \sigma \ln \left(c\right) \\
+ &= \ln c
+\end{align*}
+
+\paragraph{2.}
+The households optimization problem can be written down as:
+\begin{align*}
+&\max_{c,~h} \frac{c^{1 - \sigma} - 1}{1 - \sigma} - \frac{h^{1 + \chi}}{1 + \chi}, ~~\text{s.t.}~c = w h \left(1 - \tau_l\right) + T \\
+\implies &\max_h \frac{\left[w h \left(1 - \tau_l\right) + T\right]^{1 - \sigma} - 1}{1 - \sigma} - \frac{h^{1 + \chi}}{1 + \chi}
+\end{align*}
+Then the FOC with respect to $h$ is:
+\begin{equation*}
+\left[w h \left(1 - \tau_l\right) + T\right]^{-\sigma} w \left(1 - \tau_l\right) - h^\chi = 0
+\end{equation*}
+Now use that $T = w \tau_l h$ in FOC and Budget constraint to get the households optimality conditions:
+\begin{align}
+c^{-\sigma} w \left(1 - \tau_l\right) - h^\chi &= 0 \\
+w h - c &= 0
+\end{align}
+
+\end{document}

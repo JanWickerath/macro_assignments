@@ -1,0 +1,35 @@
+\ProvidesPackage{mystyle}
+
+
+% Set borders with the geometry package. Syntax self explanatory
+\usepackage[a4paper, left=3cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+
+% For better readability use 1 1/2 spacing
+\usepackage[onehalfspacing]{setspace}
+
+% In case you prefer a blank line before a new abstract begins, instead of indentation
+\parskip 12pt
+\parindent 0pt 
+
+% Fancyhdr to create a nice page header (and footer).
+\usepackage{fancyhdr}
+\headheight 14.5pt
+
+\pagestyle{fancy}
+\fancyhead[C]{}
+\fancyhead[R]{Page \thepage}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{}
+%\fancyfoot[R]{Page \thepage}
+
+% Some other packages you might find useful 
+\usepackage{graphicx}
+\usepackage{amsmath}
+%\usepackage{hyperref}
+\usepackage{color}
+% For bibliography use biblatex
+\usepackage[
+            backend=biber,
+            style=authoryear,
+            citestyle=authoryear
+]{biblatex}
