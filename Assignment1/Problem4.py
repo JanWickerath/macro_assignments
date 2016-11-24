@@ -27,19 +27,23 @@ def dell_u_tax(wage, cons, hours, psi, tax):
 def dell_u_trans(cons, hours, psi):
     return(1 / (cons - hours**(1 + psi) / (1 + psi)))
 
-def foc(gov_policies, psi, sig):
+def foc(gov_policies, psi, sig, start=0, end=10):
     tax = gov_policies[0]
     trans = gov_policies[1]
+    lam = gov_policies[2]
     part_a = integrate.quad(
         lambda w: dell_u_tax(w, cons(w, tax, psi, trans),
                              hours(w, tax, psi), psi, tax) * lognorm.pdf(
                                  w, s=sig, scale=np.exp(-sig**2 / 2)),
         0, 10                   # set integration borders
-    )
+    )[0]
+    part_b = integrate.quad(
+        lambda w: w * hours(w, tax, psi), 0, 10
+    )[0]
 
-    return part_a
+    return part_a + lam * part_b
 
-print(foc([0.5, 0.5], 2, 0.5))
+print(foc([0.5, 0.5, 1], 2, 0.5))
 
 
 # class GovProblem():
