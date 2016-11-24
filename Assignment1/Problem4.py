@@ -8,7 +8,7 @@ households.
 # Import scientific libraries
 from scipy.optimize import fsolve
 import scipy.integrate as integrate
-from numpy.random import lognormal
+import numpy.random.lognormal as np.lognormal
 
 class GovProblem():
     """
@@ -44,7 +44,7 @@ class GovProblem():
     #     def cons(wage, tax, psi, trans):
     #         return( ((1 - tax) * wage)**((1 + psi) / psi) + trans)
 
-# def hours(wage, tax, psi):
-#     return( ((1 - tax) * wage)**(1 / psi))
-# def cons(wage, tax, psi, trans):
-#     return( ((1 - tax) * wage)**((1 + psi) / psi) + trans)
+def hours(wage, tax, psi):
+    return( ((1 - tax) * wage)**(1 / psi))
+def cons(wage, tax, psi, trans):
+    return( ((1 - tax) * wage)**((1 + psi) / psi) + trans)
