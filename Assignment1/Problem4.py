@@ -70,47 +70,106 @@ print(foc([.5, .5], 2, 0.5))
 
 ## Fix exogenous parameters
 psi = 2
-sig = .5
+sig_grid = [0.1, 0.3, 0.5]
 x0 = [.5, 2]
 n_obs = 10000
 
-# Compute optimal redistribution scheme of the government
-policy = fsolve(
-    lambda policies: foc(policies, psi, sig, start=0, end=10),
-    x0=x0
-)
-opt_tax = policy[0]
-opt_trans = policy[1]
+# Initialize policy as empty list
+policy_grid = []
+opt_tax = []
+opt_trans = []
+wage_grid = []
+hours_grid = []
+cons_grid = []
 
-print(policy)
+counter = 0
+for sig in sig_grid:
 
+    # Compute optimal redistribution scheme of the government
+    policy_grid.append(fsolve(
+        lambda policies: foc(policies, psi, sig, start=0, end=10),
+        x0=x0
+    ))
+    opt_tax.append(policy_grid[counter][0])
+    opt_trans.append(policy_grid[counter][1])
 
-## Simulate distribution of wages and compute the distribution of consumption
-## and hours worked given the optimal redistribution scheme calculated above
-wage_draws = lognorm.rvs(s=sig, scale=np.exp(- sig**2 / 2), size=n_obs)
-print("Check the mean ", np.mean(wage_draws), " approx. 1???")
+    ## Simulate distribution of wages and compute the distribution of
+    ## consumption and hours worked given the optimal redistribution scheme
+    ## calculated above
+    wage_grid.append(
+        lognorm.rvs(s=sig, scale=np.exp(- sig**2 / 2),
+                                     size=n_obs)
+    )
+    print("Check the mean ", np.mean(wage_grid[counter]), " approx. 1???")
 
-hours_dist = hours(wage_draws, opt_tax, psi)
-cons_dist = cons(wage_draws, opt_tax, psi, opt_trans)
+    hours_grid.append(hours(wage_grid[counter], opt_tax[counter], psi))
+    cons_grid.append(cons(wage_grid[counter], opt_tax[counter], psi,
+                          opt_trans[counter]))
+
+    counter += 1
 
 
 ## Plot distributions of optimal wages, consumption and hours worked
-x_axis = np.linspace(0, 10, n_obs)
 
 fig = plt.figure()
-plt.subplot(1, 3, 1)
-plt.hist(wage_draws, bins=100)
-plt.title("Wage distribution")
+plt.subplot(3, 3, 1)
+plt.hist(wage_grid[0], bins=100)
+plt.title("Wage distribution, sigma = .1")
 
-plt.subplot(1, 3, 2)
-plt.hist(hours_dist, bins=100)
-plt.title("Hours worked distribution")
+plt.subplot(3, 3, 2)
+plt.hist(hours_grid[0], bins=100)
+plt.title("Hours worked distribution, sigma = .1")
 
-plt.subplot(1, 3, 3)
-plt.hist(cons_dist, bins=100)
-plt.title("Consumption distribution")
+plt.subplot(3, 3, 3)
+plt.hist(cons_grid[0], bins=100)
+plt.title("Consumption distribution, sigma = .1")
 
-plt.show()
+plt.subplot(3, 3, 4)
+plt.hist(wage_grid[1], bins=100)
+plt.title("Wage distribution, sigma = .3")
+
+plt.subplot(3, 3, 5)
+plt.hist(hours_grid[1], bins=100)
+plt.title("Hours worked distribution, sigma = .3")
+
+plt.subplot(3, 3, 6)
+plt.hist(cons_grid[1], bins=100)
+plt.title("Consumption distribution, sigma = .3")
+
+plt.subplot(3, 3, 7)
+plt.hist(wage_grid[2], bins=100)
+plt.title("Wage distribution, sigma = .5")
+
+plt.subplot(3, 3, 8)
+plt.hist(hours_grid[2], bins=100)
+plt.title("Hours worked distribution, sigma = .5")
+
+plt.subplot(3, 3, 9)
+plt.hist(cons_grid[2], bins=100)
+plt.title("Consumption distribution, sigma = .5")
+
+plt.tight_layout()
+
+fig.savefig(
+    'tex/figures/distribs.pdf'
+)
+
+## Plot optimal policy vs sigma
+fig = plt.figure()
+plt.subplot(1, 2, 1)
+plt.plot(sig_grid, opt_tax)
+plt.title("optimal tax rate")
+
+plt.subplot(1, 2, 2)
+plt.plot(sig_grid, opt_trans)
+plt.title("Optimal transfers")
+
+fig.savefig(
+    'tex/figures/opt_policy.pdf'
+)
+
+
+
 
 # class GovProblem():
 #     """
