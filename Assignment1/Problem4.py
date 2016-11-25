@@ -32,7 +32,6 @@ def foc(gov_policies, psi, sig, start=0, end=10):
     # readability.
     tax = gov_policies[0]
     trans = gov_policies[1]
-    lam = gov_policies[2]
     result = []
 
     # Compute different parts of first FOC (respect tax rate) and combine
@@ -46,21 +45,36 @@ def foc(gov_policies, psi, sig, start=0, end=10):
         lambda w: w * hours(w, tax, psi), start, end
     )[0]
 
-    # Store first foc in results vector
-    result.append(part_a + lam * part_b)
-
     # Compute first part of the second FOC (respect transfers)
     part_c = integrate.quad(
         lambda w: lognorm.pdf(w, s=sig, scale=np.exp(-sig**2 / 2)) *
         dell_u_trans(cons(w, tax, psi, trans), hours(w, tax, psi), psi),
         start, end
     )[0]
-    result.append(part_c - lam)
+
+    # Store first foc in results vector
+    result.append(part_a + part_c * part_b)
+
+    # Compute budget constraint
+    bud_const = trans - integrate.quad(
+        lambda w: tax * w * hours(w, tax, psi), start, end
+    )[0]
+    result.append(bud_const)
 
     return result
 
+print(foc([.5, .5], 2, 0.5))
 
-print(foc([0.5, 0.5, 1], 2, 0.5))
+psi = 2
+sig = .1
+x0 = [.5, 2]
+
+policy = fsolve(
+    lambda policies: foc(policies, psi, sig, start=0, end=10),
+    x0=x0
+)
+
+print(policy)
 
 
 # class GovProblem():
