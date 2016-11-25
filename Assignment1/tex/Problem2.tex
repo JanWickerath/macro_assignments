@@ -1,0 +1,54 @@
+\section*{Problem 2}
+
+The lagrangian corresponding to the households maximization problem can be written as:
+\begin{equation*}
+\mathscr{L} = \frac{1}{1 - \sigma} \left[c^{\mu } \left(1 - h\right)^{1 - \mu}\right]^{1 - \sigma } - \lambda \left[c - w h \left(1 - \tau_l\right) + T\right]
+\end{equation*}
+Then the first order conditions with respect to consumption and labor supply are
+\begin{align*}
+&\frac{d \mathscr{L}}{d c} = \left[c^{\mu } \left(1 - h\right)^{1 - \mu}\right]^{-\sigma} \mu c^{\mu - 1} \left(1 - h\right)^{1 - \mu} - \lambda &\overset{!}{=} 0 \\
+&\frac{d \mathscr{L}}{d h} = - \left[c^{\mu } \left(1 - h\right)^{1 - \mu}\right]^{-\sigma} c^\mu \left(1 - \mu\right) \left(1 - h\right)^{-\mu} + \lambda w \left(1 - \tau_l\right) &\overset{!}{=} 0
+\end{align*}
+Adding together those two conditions and rearranging yields
+\begin{equation}
+\frac{1 - \mu}{1 - h} c = \mu w \left(1 - \tau_l\right)
+\end{equation}
+This equation together with the budget constrained, $c - w h = 0$, can then be handed to matlabs \texttt{fsolve} command to find the optimal consumption and labor supply policy, given $\mu,~\tau_l$ and the wage rate. 
+
+\paragraph{1.}
+It gets clear from those two conditions that the optimal household decisions do not depend on the parameter $\sigma$. This result is also confirmed by figure \ref{fig:problem2}. Compared to the case before hours worked get closer to zero for high tax rates. This leads to lower consumption than before and an earlier peak of tax revenues.
+\begin{figure}[h]
+	\centering
+			\includegraphics[width=0.99\textwidth]{figures/problem2.pdf}
+	\caption{Optimal Policies, Transfers and welfare with nonseparable utility function}
+	\label{fig:problem2}
+\end{figure}
+
+\paragraph{2.}
+From the lecture notes (slide 38) we get for the given utility function that 
+\begin{equation*}
+\varepsilon_{\text{Frisch}} = \frac{1 - h}{h} \left[\frac{1 - \mu\left(1 - \sigma\right)}{\sigma}\right]
+\end{equation*}
+and figure \ref{fig:problem2_frisch} plots the frisch elasticity as a function of the tax rate.
+\begin{figure}[h]
+	\centering
+			\includegraphics[width=0.99\textwidth]{figures/problem2_frisch.pdf}
+	\caption{Frisch elasticities as function of tax rate}
+	\label{fig:problem2_frisch}
+\end{figure}
+
+\paragraph{3.}
+With $T = 0$ the budget constraint becomes $c - w h \left(1 - \tau_l\right)$ and the foc of the lagrangian is the same as derived above. Figure \ref{fig:problem2-3} and \ref{fig:problem2-3_frisch} show the same plots as above in this situation. We can see that with $T = 0$ consumption is linearly declining in the tax rate and hours worked are constant and only depend on the value of $\mu$. Additionally we see that tax revenue is linearly increasing in the tax rate and consumers welfare drops sharper at higher values of $\tau_l$ then before. Due to the fact that labor supply is constant in tax rates the same holds true for the frisch labor supply elasticity.
+\begin{figure}[h]
+	\centering
+			\includegraphics[width=0.99\textwidth]{figures/problem2-3.pdf}
+	\caption{Optimal Policies, Transfers and welfare with nonseparable utility function and $T = 0$}
+	\label{fig:problem2-3}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+			\includegraphics[width=0.99\textwidth]{figures/problem2-3_frisch.pdf}
+	\caption{Frisch elasticities as function of tax rate with $T = 0$}
+	\label{fig:problem2-3_frisch}
+\end{figure}

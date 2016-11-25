@@ -1,0 +1,73 @@
+
+\section*{Problem 4}
+\label{problem4}
+
+
+\paragraph{Household Problem}
+
+Assuming log utility the household problem can be written as
+\begin{align*}
+  \max_{c_i, h_i} \log \left[ c_i - \frac{h_i^{1 + \psi }}{1 + \psi } \right]
+  \\
+  \text{s.t.} ~ c_i = \left(1 - \tau\right) w_i h_i + T
+\end{align*}
+Substituting the budget constraint into the utility function and taking the
+first derivative with respect to hours worked yields the following first order
+condition:
+\begin{equation*}
+  \frac{1}{c_i - \frac{h_i^{1 + \psi }}{1 + \psi }} \left[ \left(1 - \tau
+    \right) w_i - h_i^\psi \right] \overset{!}{=} 0 
+\end{equation*}
+After rearranging and using the budget constraint we get the following optimal
+consumption and labor supply policy of the households:
+\begin{align*}
+  h_i^* &= \left[ \left(1 - \tau\right) w_i \right]^{\frac{1}{\psi }} \\
+  c_i^* &= \left[ \left(1 - \tau\right) w_i \right]^{\frac{1 + \psi }{\psi }} + T
+\end{align*}
+
+Using this we can derive the marshallian elasticity as follows:
+\begin{align*}
+  \frac{\partial h_i}{\partial w_i} \frac{w_i}{h_i} &= \frac{1}{\psi }
+  \left[\left(1 - \tau \right) w_i \right]^{\frac{1 - \psi}{\psi }} \frac{w_i
+  \left(1 - \tau\right)}{\left[ \left(1 - \tau \right) w_i
+  \right]^{\frac{1}{\psi }}} \\
+  &= \frac{1}{\psi}
+\end{align*}
+As we can see the labor supply elasticity is independent of the wage and hence
+the wealth of the household, but only depends on the parameter $\psi $.
+
+\paragraph{Social Planers Problem}
+
+Assuming a utilitarian social welfare function
+$V^{Gov} = \int_i f\left(w_i\right) U_i d_i $, where $f\left(w_i\right) $
+denotes the probability distribution function of wages and $U_i$ the utility of
+household $i$, the social planners problem can be written as
+\begin{align*}
+  \max_{\tau, T} V^{Gov} \\
+  \text{s.t.} ~ G + T \leq \int_i \tau w_i h_i d_i \\
+  h_i = h_i^* \\
+  c_i = c_i^*
+\end{align*}
+For simplicity assume $G = 0$, i.e. government has no expenditure despite
+Transfer payments, and that the budget constraint is binding, i.e. the
+government does not waste any resources. Then the lagrangian of the planners
+problem is
+\begin{align*}
+  \mathscr{L} = \int_i f\left(w_i\right) U_i d_i - \lambda \left[ T - \int_i \tau w_i
+  h_i d_i \right]
+\end{align*}
+and the corresponding first order conditions are
+\begin{align*}
+  \frac{d \mathscr{L}}{d \tau } &= \int_i f\left(w_i\right) \frac{d U_i}{d \tau}
+  d_i + \lambda \int_i w_i h_i^* d_i \overset{!}{=} 0 \\
+  \frac{d \mathscr{L}}{d T} &= \int_i \left(w_i\right) \frac{d U_i}{d T} d_i -
+  \lambda \overset{!}{=} 0
+\end{align*}
+with
+\begin{align*}
+  \frac{d U_i}{d \tau} &= \frac{w_i h_i^*}{c_i^* - \frac{h_i^{*^{1 + \psi}}}{1 +
+  \psi}} \left[ \frac{1}{\psi} \left[ \left(1 - \tau\right) w_i 
+  \right]^{\frac{1 - \psi}{\psi}} - \frac{1 + \psi}{\psi} \right] \\
+  \frac{d U_i}{d T} &= \frac{1}{c_i^* - \frac{h_i^{*^{1 + \psi}}}{1 +
+  \psi}}
+\end{align*}

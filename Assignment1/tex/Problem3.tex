@@ -1,0 +1,34 @@
+\section*{Problem 3}
+
+\paragraph{1. - 3.}
+Figure \ref{fig:problem3} plots the optimal policies of working households, consumption of nonworking households and welfare of both households and the government. One can see that the tax rate which maximizes the SWF is between 50\% and 60\% (true value is 58\%).
+\begin{figure}[h]
+\includegraphics[width=.99\columnwidth]{figures/problem3.pdf}
+\caption{Optimal policies, transfers and welfare in two consumer model}
+\label{fig:problem3}
+\end{figure}
+
+\paragraph{4.}
+The maximization problem of the social planner is
+\begin{align*}
+&\max_{c_1, c_2, h_1} ~ \lambda \left[\frac{c_1^{1 - \sigma} - 1}{1 - \sigma} - \frac{h^{1 + \psi}}{1 + \psi}\right] + \left(1 - \lambda\right) \left[ \frac{c_2^{1 - \sigma} - 1}{1 - \sigma}\right] \\
+&s.t.~c_1 + c_2 = w h_1
+\end{align*}
+The corresponding first order conditions are
+\begin{align*}
+\lambda c_1^{- \sigma} - \mu &\overset{!}{=} 0 \\
+\left(1 - \lambda \right) c_2^{- \sigma} - \mu &\overset{!}{=} 0 \\
+- \lambda h^\psi + \mu w &\overset{!}{=} 0
+\end{align*}
+where $\mu $ denotes the lagrange multiplier on the aggregate budget constraint.
+Rearranging these terms and using the budget constraint yields the following social planner allocation:
+\begin{align*}
+c_2^{SP} &= \left\{ \frac{ w^{ \frac{\psi + 1}{\psi} } \left[\frac{1 - \lambda}{\lambda}\right]^{ \frac{1}{\psi} } }{ \left[ \frac{\lambda}{1 - \lambda} \right]^{ \frac{1}{\sigma} } + 1 } \right\}^{\frac{\psi}{\psi + \sigma}} \\
+c_1^{SP} &= \left(\frac{\lambda}{\lambda - 1}\right)^{ \frac{1}{\sigma} }
+\left\{ \frac{ w^{ \frac{\psi + 1}{\psi} } \left[\frac{1 - \lambda}{\lambda}\right]^{ \frac{1}{\psi} } }{ \left[ \frac{\lambda}{1 - \lambda} \right]^{ \frac{1}{\sigma} } + 1 } \right\}^{\frac{\psi}{\psi + \sigma}} \\
+h_1^{SP} &= \left( \frac{1 - \lambda}{\lambda} \right)^{ \frac{1}{\psi} }
+\left\{ \frac{ w^{ \frac{\psi + 1}{\psi} } \left[\frac{1 - \lambda}{\lambda}\right]^{ \frac{1}{\psi} } }{ \left[ \frac{\lambda}{1 - \lambda} \right]^{ \frac{1}{\sigma} } + 1 } \right\}^{ - \frac{\sigma}{\psi + \sigma} } w^{ \frac{1}{\psi} }
+\end{align*}
+
+\paragraph{5.}
+For the given shares non working households would have a voting majority and therefore the governments objective would be to maximize welfare of non working households. Hence it would implement the revenue maximizing tax rate. As in this model labor supply of working households actually increases in the tax rate this would imply that the government would set a tax rate as close to 1 as possible.
