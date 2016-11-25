@@ -65,16 +65,31 @@ def foc(gov_policies, psi, sig, start=0, end=10):
 
 print(foc([.5, .5], 2, 0.5))
 
-psi = 2
-sig = .1
-x0 = [.5, 2]
 
+## Fix exogenous parameters
+psi = 2
+sig = .5
+x0 = [.5, 2]
+n_obs = 10000
+
+# Compute optimal redistribution scheme of the government
 policy = fsolve(
     lambda policies: foc(policies, psi, sig, start=0, end=10),
     x0=x0
 )
+opt_tax = policy[0]
+opt_trans = policy[1]
 
 print(policy)
+
+
+## Simulate distribution of wages and compute the distribution of consumption
+## and hours worked given the optimal redistribution scheme calculated above
+wage_draws = lognorm.rvs(s=sig, scale=np.exp(- sig**2 / 2), size=n_obs)
+print("Check the mean ", np.mean(wage_draws), " approx. 1???")
+
+hours_dist = hours(wage_draws, opt_tax, psi)
+cons_dist = cons(wage_draws, opt_tax, psi, opt_trans)
 
 
 # class GovProblem():
