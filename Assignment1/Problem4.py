@@ -10,8 +10,10 @@ from scipy.optimize import fsolve
 import scipy.integrate as integrate
 from scipy.stats import lognorm
 import numpy as np
+import matplotlib.pyplot as plt
 
 
+# Define helper functions
 def hours(wage, tax, psi):
     return( ((1 - tax) * wage)**(1 / psi))
 
@@ -91,6 +93,24 @@ print("Check the mean ", np.mean(wage_draws), " approx. 1???")
 hours_dist = hours(wage_draws, opt_tax, psi)
 cons_dist = cons(wage_draws, opt_tax, psi, opt_trans)
 
+
+## Plot distributions of optimal wages, consumption and hours worked
+x_axis = np.linspace(0, 10, n_obs)
+
+fig = plt.figure()
+plt.subplot(1, 3, 1)
+plt.hist(wage_draws, bins=100)
+plt.title("Wage distribution")
+
+plt.subplot(1, 3, 2)
+plt.hist(hours_dist, bins=100)
+plt.title("Hours worked distribution")
+
+plt.subplot(1, 3, 3)
+plt.hist(cons_dist, bins=100)
+plt.title("Consumption distribution")
+
+plt.show()
 
 # class GovProblem():
 #     """
