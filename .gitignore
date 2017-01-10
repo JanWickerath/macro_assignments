@@ -2,3 +2,7 @@
 *.pdf
 *.aux
 *.log
+*.zip
+*.ipynb*
+*.html
+__pycache__*
