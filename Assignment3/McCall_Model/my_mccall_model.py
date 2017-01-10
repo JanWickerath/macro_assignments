@@ -79,3 +79,26 @@ class MyMcCallModel:
                   np.sum(np.maximum(V_e, V_u) * self.prob_grid)
 
         return V_e_new, V_u_new
+
+
+    def solve(self, tol=1e-5, max_iter=2000):
+        """
+        Iterate over the bellman equation until convergence.
+
+        """
+
+        V_e = np.ones(len(self.wage_grid))
+        V_u = 1
+        count = 0
+        error = tol + 1
+
+        while error > tol and count < max_iter:
+            V_e_new, V_u_new = self._update_bellman(V_e, V_u)
+            error_1 = np.max(np.abs(V_e_new - V_e))
+            error_2 = np.abs(V_u_new - V_u)
+            error = np.max(error_1, error_2)
+            V_e[:] = V_e_new
+            V_u = V_u_new
+            count += 1
+
+        return V_e, V_u
