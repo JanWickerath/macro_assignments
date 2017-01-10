@@ -3,6 +3,10 @@ My implementation of a McCall model class.
 
 """
 
+import numpy as np
+
+
+# Definition of my McCall model class
 class MyMcCallModel:
     """
     Model class that represents a McCall job search model. Stores the
@@ -25,3 +29,12 @@ class MyMcCallModel:
         self.b = b
         self.sigma = sigma
         self.wage_grid, self.prob_grid = wage_grid, prob_grid
+
+        # Add uniformly distributed wages in case wage_grid is not provided
+        if wage_grid is None:
+            n = 100
+            self.wage_grid = np.linspace(0, 1, n)
+            self.prob_grid = np.array([1/n] * n)
+        else:
+            self.wage_grid = wage_grid
+            self.prob_grid = prob_grid
