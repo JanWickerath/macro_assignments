@@ -1,0 +1,161 @@
+
+\section*{Problem 1}
+
+\paragraph{1.)}
+Use the Arrow-Debreu equilibrium structure (see Krueger chapter 8) which
+assumes that all trading takes place in a fictional period 0 and no trade
+afterwards. Then households maximize their lifetime utility subject to their
+lifetime budgetconstraint
+\begin{align*}
+  \max_{c_t^y, c_{ŧ+1}^o} u\left(c_t^y\right) + u\left(c_{t+1}^o\right) \\
+  \text{s. t.}~~p_t c_t^y + p_{t+1} c_{t+1}^o = p_t e^y + p_{t+1} e^o
+\end{align*}
+Old households maximize their period consumption subject to their endowment
+\begin{align*}
+  max_{c_1^o} u\left(c_1^o\right) \\
+  \text{s.t.}~~p_1 c_1^o = p_1 e^o + m
+\end{align*}
+additionally goods markets have to clear
+\begin{equation*}
+  c_t^y + c_t^o = e_y + e_o
+\end{equation*}
+
+Assuming log utility we get from the first order condition of the household
+that 
+\begin{equation*}
+  \frac{1}{c_t^y} = \frac{p_t}{p_{t+1}} \frac{1}{c_{t+1}^o} \iff
+  \frac{p_{t+1}}{p_t} = \frac{c_t^y}{c_{t+1}^o}
+\end{equation*}
+
+Assuming $m = 0$ we immediately get that $c_1^o = e^o$. Plugging this into the
+goods market clearing condition delivers $c_1^y = e^y$. Now, using the budget
+condition of the household born in period one, we get that 
+\begin{align*}
+  p_1 \left(c_1^y - e^y\right) &= p_2 \left(e^o - c_2^o\right) \\
+  \iff c_2^o &= e^o
+\end{align*}
+Applying the reasoning iteratively we see that in every period $c_t^y = e^y$,
+and $c_t^o = e^o$. To characterize the equilibrium it remains to find an
+equilibrium price vector. To find it we use the households first order
+condition and plug in the consumption quantities found above, so that
+\begin{equation*}
+  \frac{p_{t+1}}{p_t} = \frac{e^y}{e^o}
+\end{equation*}
+So by fixing an initial price value $p_1$ we can get the entire sequence of
+prices for the economy.
+Finally calculate excess demands:
+\begin{align*}
+  y = c_t^y - e^y = 0~\forall t\\
+  z = c_t^o - e^o = 0~\forall t
+\end{align*}
+
+\paragraph{2.)}
+Assume the same equilibrium structure as above but no assume $m > 0$. The
+representative households FOC looks the same as above and can be reformulated
+to
+\begin{align*}
+  c_t^y = \frac{p_{t+1}}{p_t} c_{t+1}^o \\
+  \overset{\text{lifetime budget}}{\implies} ~~ 2 \frac{p_{t+1}}{p_t} c_{t+1}^o =
+  \underbrace{e^y}_{\epsilon} + \frac{p_{t+1}}{p_t} \underbrace{e_{t+1}^o}_{1 -
+  \epsilon} \\
+  \iff ~ c_{t+1}^o = \frac{1}{2} \left[\frac{p_t}{p_{t+1}} \epsilon + \left(1 -
+  \epsilon\right) \right] \\
+  \implies ~ c_t^y = \frac{1}{2} \left[\epsilon + \frac{p_{t+1}}{p_t} (1 - \epsilon)\right]
+\end{align*}
+From this we get the excess demands as
+\begin{align*}
+  y = \frac{1}{2} \left[\frac{p_{t+1}}{p_t} (1 - \epsilon) - \epsilon \right]
+  \\
+  z = \frac{1}{2} \left[\frac{p_t}{p_{t+1}} \epsilon - (1 - \epsilon) \right]
+\end{align*}
+Solving $y$ for the price ratio yields
+\begin{equation*}
+  \frac{p_t}{p_{t+1}} = \frac{1 - \epsilon}{2 y + \epsilon}
+\end{equation*}
+Plugging this into $z$ and simplifying we get
+\begin{equation*}
+  z(y) = \frac{\epsilon (1 - \epsilon)}{4 y + 2 \epsilon} - \frac{1 - \epsilon}{2}
+\end{equation*}
+which is the definition of the offer curve.
+
+\paragraph{3.)}
+Note that we know from the first welfare theorem that a sufficient condition
+for a competitive equilibrium to be pareto optimal is that
+$\sum_{t=1}^{\infty} p_t < \infty$. We have shown before that
+$\frac{p_t}{p_{t+1}} = \frac{1 - \epsilon}{2 y + \epsilon}$. If we assume $m =
+0$ we can use the result from 1.) that $y = 0$ so that we get
+\begin{equation*}
+  \frac{p_t}{p_{t+1}} = \frac{1 - \epsilon}{\epsilon} \iff p_{t+1} = p_t
+  \frac{\epsilon}{1 - \epsilon} = \left(\frac{\epsilon}{1 - \epsilon} \right)^2
+  p_{t-1} = \dots = \left(\frac{\epsilon}{1 - \epsilon}\right)^t p_1
+\end{equation*}
+To simplify things normalize $p_1 = 1$. Then we get
+\begin{align*}
+  \sum_{t=1}^\infty p_t = \sum_{t=1}^\infty \left(\frac{\epsilon}{1 -
+  \epsilon}\right)^{t-1} = \sum_{t=0}^\infty \left(\frac{\epsilon}{1 - \epsilon}\right)^t
+\end{align*}
+If we have that $\epsilon < 1/2~\implies~\frac{\epsilon}{1 - \epsilon} < 1$ and
+therefore $\sum_{t=1}^\infty p_t < \infty $ from which follows that the no
+trade equilibrium in this parameterization is indeed pareto efficient.
+
+\paragraph{4.)}
+
+Reintroducing growth will effect the aggregate resource constraint to be
+\begin{equation*}
+  c_t^o + (1 + n) c_t^y = e^o + (1 + n) e^y
+\end{equation*}
+Assume the following taxation scheme: in every period the young have to pay
+taxes $\tau$ and the old receive benefits $T$. Assume a sequential equilibrium,
+that is the representative household has the following optimization problem
+\begin{align*}
+  \max_{c_t^y, c_{t+1}^o} \ln(c_t^y) + \beta \ln(c_{t+1}^o) \\
+  \text{s.t.}~~c_t^y + s_t^y + \tau &\leq e^y \\
+  c_{t+1}^o &\leq e^o + (1 + r_{t+1}) + T
+\end{align*}
+Additionally in equilibrium the government budget has to be balanced, i.e.
+\begin{equation*}
+  (1 + n) \tau = T
+\end{equation*}
+Initial olds budget constraint changes to
+\begin{equation*}
+  c_1^o \leq e^o + (1 + r_1) m + T
+\end{equation*}
+The households FOC yields
+\begin{equation*}
+  c_{t+1}^o = \beta (1 + r_{t+1}) c_t^y
+\end{equation*}
+We can use the same induction argument as above to see that for $m = 0$ we will
+have an optimal household policy of
+\begin{equation*}
+  s_t^y = 0,~c_t^y = e_y + \tau,~c_{t+1}^o = e^0 + T = e^o + (1 + n) \tau
+\end{equation*}
+Using this in the households FOC yields
+\begin{align*}
+  \frac{c_{t+1}^o}{c_t^y} \frac{1}{\beta} = 1 + r_{t+1} \\
+  \implies \frac{e^o + (1 + n) \tau}{e^y - \tau} \frac{1}{\beta} &= 1 + r_{t+1}
+  \\ 
+  &= 1 + r
+\end{align*}
+Now write households lifetime utility as a function of the tax rate
+\begin{equation*}
+  V(\tau) = \ln(e_y - \tau) + \beta \ln(e^o + (1 + n) \tau)
+\end{equation*}
+Assuming that maximizing this with respect to $\tau$ has an interior solution
+we get the following first order condition
+\begin{align*}
+  \beta (1 + n) (e^y - \tau^*) &= e^o + (1 + n) \tau^* \\
+  \iff \tau^* &= \frac{\beta}{1 + \beta} e^y - \frac{e^o}{(1 + n)(1 + \beta)} \\
+            &= \frac{\beta}{1 + \beta} \epsilon - \frac{1 - \epsilon}{(1 + n)(1 + \beta)}
+\end{align*}
+Taxation of the young is welfare improving if and only if $\tau^* > 0$.
+\begin{align*}
+  \implies \beta (1 + n) \epsilon - 1 + \epsilon &> 0 \\
+  \iff (1 + n) &> \frac{1 - \epsilon}{\epsilon} \frac{1}{\beta}  \left( = (1 + r)
+                 ~\text{if}~\tau = 0 \right)
+\end{align*}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "Assignment2_main"
+%%% End:

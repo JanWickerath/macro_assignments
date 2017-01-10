@@ -1,0 +1,39 @@
+
+\section*{Problem 5}
+
+\paragraph{1.)}
+
+The assumption $w_y < w_m$ seems natural in a setting where the three periods
+are related to a model of the entire lifecycle. In this setting one could argue
+that the young invest more in the accumulation of human capital which will
+increase their earnings potential in the second mid period of their
+lifetime. Writing the model in endowment terms only might be reasonable if one
+wants to abstract from the investment decision in human capital. 
+
+\paragraph{2.)}
+
+\begin{equation*}
+  \max_{a_t^y, a_{t+1}^m} \ln(w^y - a_t^y) + \beta \ln(w^m + a_t^y - a_{t+1}^m)
+  + \beta^2 \ln(a_{t+1}^m)
+\end{equation*}
+The first order conditions of this problem can be solved to
+\begin{align*}
+  a_t^y &= w^y - \frac{w^y + w^m}{\beta^2 + \beta + 1} \\
+  a_{t+1}^m &= (w^y + w^m) \frac{\beta^2}{\beta^2 + \beta + 1}
+\end{align*}
+
+\paragraph{3.)}
+
+So $a^y$ can become negative if and only if
+\begin{equation*}
+  \underbrace{w^y}_{\text{endowment when young}} < \underbrace{\frac{w^y +
+      w^m}{\beta^2 + \beta + 1}}_{\text{discounted lifetime endowment}}
+\end{equation*}
+
+\textbf{Solution attempts to the extension can be found in the attached jupyter
+notebook.}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "Assignment2_main"
+%%% End:

@@ -1,0 +1,88 @@
+
+\section*{Problem 2}
+
+Now every individual is endowed with one unit of labor when young and nothing
+when old. The initial old are endowed with $(1 + n) k_1$ units of capital,
+which is storable. Additional to households there exist firms, which employ
+labor and capital to produce the consumption good according to the production
+function $F(K_t,~L_t) = Y_t$. The firm pays prices $r_t,~w_t$ on its input
+factors. Then a competitive equilibrium is characterized by an initial capital
+stock $k_1$, a consumption allocation of households, an allocation of factor
+demands of the firms and prices for labor and capital, such that households
+\begin{align*}
+  \max_{c_t^y, c_{t+1}^o, s_t^y}  u(c_t^y) + \beta u(c_{t+1}^o) \\
+  \text{s.t.}~~c_t^y + s_t^y &\leq w_t \\
+  c_{t+1}^o &\leq (1 + r_{t+1} - \delta) s_t^y
+\end{align*}
+where $\delta$ is the depreciation rate of capital. The initial old maximize
+their period utility subject to
+\begin{equation*}
+  c_1^o \leq (1 + r_1 - \delta) k_1
+\end{equation*}
+
+Given input prices firms maximize profits:
+\begin{equation*}
+  \max_{K_t,L_t} F(K_t,~L_t) - r_t K_t - w_t L_t
+\end{equation*}
+and all markets (goods, capital, labor) clear
+\begin{align*}
+  N_t^y c_t^y + N_t^o c_t^o + K_{t+1} - (1 - \delta) K_t &= F(K_t,~L_t) \\
+  N_t^y s_t^y &= K_{t+1} \\
+  N_t^y &= L_t
+\end{align*}
+
+Solving the households problem leads to the following first order condition
+\begin{equation*}
+  u'(c_t^y) = \beta (1 + r_{t+1} - \delta) u'(c_{t+1}^o)
+\end{equation*}
+
+Now assume log utility and a Cobb douglas production function with constant
+returns to scale $F(K,~L) = K^\alpha L^{1 - \alpha}$. To solve for the law of
+motion of capital first rewrite the asset market clearing condition
+\begin{equation*}
+  K_{t+1} = N_t^y s_t^y \iff (1 + n) k_{t+1} = s_t^y 
+\end{equation*}
+with $k_t = K_t / L_t$. We know that $w_t = \frac{\partial F(K_t,
+  L_t)}{\partial L_t} = (1 - \alpha) k_t^\alpha$. Now use that
+$c_{t+1}^o = (1 + r_{t+1} - \delta) s_t^y$ and plug into the households FOC,
+which under log utility can be written as
+\begin{align*}
+  & c_{t+1}^o = \beta (1 + r_{t+1} - \delta) c_t^y \\
+  &\iff (1 + r_{t+1} - \delta) s_t^y = \beta (1 + r_{t+1} - \delta) c_t^y \\
+  &\iff c_t^y = \frac{s_t^y}{\beta} \\
+  &\implies \frac{s_t^y}{\beta} + s_t^y = w_t \\
+  &\iff s_t^y = w_t \frac{\beta}{1 + \beta} \\
+  &\implies (1 + n) k_{t+1} = (1 - \alpha) k_t^\alpha \frac{\beta}{1 + \beta}
+\end{align*}
+The last equation above defines the law of motion for capital. To finde the
+steady state assume that $k_{t+1} = k_t = k$ and solve the equation above for
+$k$.
+\begin{align*}
+  (1 + n) k &= (1 - \alpha) k^\alpha \frac{\beta}{1 + \beta} \\
+  \iff k &= \left[\frac{(1 - \alpha) \beta}{(1 + n) (1 +
+           \beta)}\right]^{\frac{1}{1 - \alpha}}
+\end{align*}
+
+To find the golden rule capital stock (not asked for here, but needed for the
+next exercise) find the steady state capital stock that maximizes total period
+consumption $c^y + c^o / (1 + n) = (n + \delta) k - f(k)$.
+Taking the first derivative with respect to $k$ of the right hand side leads to
+the following first order condition:
+\begin{align*}
+  (n + \delta) - f'\left(k^{GR}\right) = 0 \\
+  \iff n + \delta = f'\left(k^{GR}\right)
+\end{align*}
+In the cobb douglas case $f'(k) = \alpha k^{\alpha - 1}$ so that
+\begin{align*}
+  n + \delta = \alpha k_{GR}^{\alpha - 1} \\
+  \iff k^{GR} = \left(\frac{n + \delta}{\alpha}\right)^{\frac{1}{\alpha - 1}}
+\end{align*}
+
+
+\textbf{For Problems 3 and 4 see attached Jupyter notebooks}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "Assignment2_main"
+%%% End:
