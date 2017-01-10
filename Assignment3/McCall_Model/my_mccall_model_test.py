@@ -20,14 +20,44 @@ class TestMyMcCall(unittest.TestCase):
 
     def test_solve_model_benchmark_quantecon(self):
         model = mcm.MyMcCallModel()
-        true_mod = McCallModel(
-            w_vec=np.linspace(0, 1, 100), p_vec=np.array([.01] * 100)
+        model_sol = model.solve()
+        true_mod = McCallModel()
+        true_sol = solve_mccall_model(true_mod)
+
+        np.testing.assert_array_almost_equal(
+            model_sol[0],
+            true_sol[0]
         )
-        # self.assertEqual(
-        #     model.solve(),
-        #     solve_mccall_model(true_mod)
-        # )
-        np.testing.assert_array_almost_equal
+        self.assertAlmostEqual(
+            model_sol[1],
+            true_sol[1]
+        )
+
+
+    def test_solve_model_uniform_wages(self):
+        n = 100
+        wage_grid = np.linspace(10, 20, n)
+        prob_grid = np.array([1 / n] * n)
+        model = mcm.MyMcCallModel(
+            wage_grid=wage_grid, prob_grid=prob_grid
+        )
+        model_sol = model.solve()
+
+        true_mod = McCallModel(
+            w_vec=wage_grid, p_vec=prob_grid
+        )
+        true_sol = solve_mccall_model(true_mod)
+
+        np.testing.assert_array_almost_equal(
+            model_sol[0],
+            true_sol[0]
+        )
+        self.assertAlmostEqual(
+            model_sol[1],
+            true_sol[1]
+        )
+
+
 
 if __name__ == '__main__':
     unittest.main()

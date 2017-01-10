@@ -4,6 +4,8 @@ My implementation of a McCall model class.
 """
 
 import numpy as np
+from numba import jit
+from quantecon.distributions import BetaBinomial
 
 
 # Definition of my McCall model class
@@ -16,7 +18,7 @@ class MyMcCallModel:
     """
 
     def __init__(self,
-                 alpha=0,
+                 alpha=.2,
                  beta=.98,
                  gamma=0.7,
                  b=6.0,
@@ -32,9 +34,15 @@ class MyMcCallModel:
 
         # Add uniformly distributed wages in case wage_grid is not provided
         if wage_grid is None:
-            n = 100
-            self.wage_grid = np.linspace(0, 1, n)
-            self.prob_grid = np.array([1/n] * n)
+            # n = 100
+            # self.wage_grid = np.linspace(0, 1, n)
+            # self.prob_grid = np.array([1/n] * n)
+            n = 60  # number of possible outcomes for wage
+            self.wage_grid = np.linspace(10, 20, n)     # wages between 10 and 20
+            a, b = 600, 400  # shape parameters
+            dist = BetaBinomial(n-1, a, b)
+            self.prob_grid = dist.pdf()
+
         else:
             self.wage_grid = wage_grid
             self.prob_grid = prob_grid
@@ -102,3 +110,7 @@ class MyMcCallModel:
             count += 1
 
         return V_e, V_u
+
+
+# model = MyMcCallModel()
+# print(model.solve())
