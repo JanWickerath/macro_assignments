@@ -38,3 +38,44 @@ class MyMcCallModel:
         else:
             self.wage_grid = wage_grid
             self.prob_grid = prob_grid
+
+
+    def _utility(self, cons, sigma):
+        """
+        CRRA utility function.
+
+        """
+        if cons <= 0:
+            return -10e6
+        elif sigma == 1:
+            return np.log(cons)
+        else:
+            return (cons**(1 - sigma) - 1) / (1 - sigma)
+
+    def get_utility(self, cons):
+        """
+        Return the utility of the agent in the current instance of the model
+        for a given consumption level.
+
+        """
+        return self._utility(cons, self.sigma)
+
+
+    def _update_bellman(self, V_e, V_u):
+        """
+        Update the Bellman equations of the McCall job search model.
+
+        """
+        V_e_new = np.zeros(len(V_e))
+
+        for w_idx, wage in enumerate(self.wage_grid):
+            V_e_new[w_idx] = self.get_utility(self.wage_grid[w_idx]) + \
+                             self.beta * ((1 - self.alpha) * V_e[w_idx] +
+                                          self.alpha * V_u)
+
+        V_u_new = self.get_utility(self.b) + \
+                  self.beta * (1 - self.gamma) * V_u + \
+                  self.beta * self.gamma * \
+                  np.sum(np.maximum(V_e, V_u) * self.prob_grid)
+
+        return V_e_new, V_u_new
