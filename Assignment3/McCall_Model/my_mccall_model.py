@@ -24,12 +24,14 @@ class MyMcCallModel:
                  b=6.0,
                  sigma=2.0,
                  wage_grid=None,
-                 prob_grid=None):
+                 prob_grid=None,
+                 util_spec='crra'):
         self.alpha = alpha
         self.beta = beta
         self.gamma = gamma
         self.b = b
         self.sigma = sigma
+        self.util_spec = util_spec
         self.wage_grid, self.prob_grid = wage_grid, prob_grid
 
         # Add uniformly distributed wages in case wage_grid is not provided
@@ -42,17 +44,21 @@ class MyMcCallModel:
             self.prob_grid = prob_grid
 
 
-    def _utility(self, cons, sigma):
+    def _utility(self, cons, sigma, util_spec):
         """
         CRRA utility function.
 
         """
-        if cons <= 0:
-            return -10e6
-        elif sigma == 1:
-            return np.log(cons)
-        else:
-            return (cons**(1 - sigma) - 1) / (1 - sigma)
+        if util_spec == 'linear':
+            return cons
+        elif util_spec == 'crra':
+            if cons <= 0:
+                return -10e6
+            elif sigma == 1:
+                return np.log(cons)
+            else:
+                return (cons**(1 - sigma) - 1) / (1 - sigma)
+
 
     def get_utility(self, cons):
         """
@@ -60,7 +66,7 @@ class MyMcCallModel:
         for a given consumption level.
 
         """
-        return self._utility(cons, self.sigma)
+        return self._utility(cons, self.sigma, self.util_spec)
 
 
     def _update_bellman(self, V_e, V_u):
@@ -104,3 +110,12 @@ class MyMcCallModel:
             count += 1
 
         return V_e, V_u
+
+
+    def compute_reservation_wage(self, sigma=None):
+        """
+        Compute and return the reservation wage for a given sigma. If no sigma
+        is provided use the sigma from the model instance.
+
+        """
+        pass
