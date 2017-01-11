@@ -112,10 +112,17 @@ class MyMcCallModel:
         return V_e, V_u
 
 
-    def compute_reservation_wage(self, sigma=None):
+    def compute_reservation_wage(self):
         """
-        Compute and return the reservation wage for a given sigma. If no sigma
-        is provided use the sigma from the model instance.
+        Compute and return the reservation wage of the model instance.
 
         """
-        pass
+        res_wage = np.inf
+        V_e, V_u = self.solve()
+
+        for v_idx, value in enumerate(V_e):
+            if value > V_u:
+                res_wage = self.wage_grid[v_idx]
+                break
+
+        return res_wage
