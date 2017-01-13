@@ -3,24 +3,55 @@ Compute reservation wage of a given instance of a McCallModel.
 
 """
 
+
 import numpy as np
-from mccall_bellman_iteration import *
+from my_mccall_model import MyMcCallModel
 
-
-def compute_reservation_wage(mcm):
+def log_logistics_pdf(x, alpha, beta):
     """
-    Compute and return the reservation wage of a given model of a McCall growth
-    model.
+    Return the pdf of a log logistical distribution with shape parameters
+    alpha and beta at position x.
 
     """
 
-    res_wage = np.inf
-    V, U = solve_mccall_model(mcm)
+    return ((beta / alpha) * (x / alpha)**(beta - 1)) / \
+        (1 + (x / alpha)**beta)**2
 
-    w_idx = 0
-    for v_idx, value in enumerate(V):
-        if value > U:
-            res_wage = mcm.w_vec[v_idx]
-            break
 
-    return res_wage
+# Create instance of a model with uniform wage distribution
+alpha = 0                       # No risk of losing a job
+beta = 0.98                     # Standard discount factor
+gamma = 1                       # Get a job offer every period
+b = 0.1                         # Unemployment benefits
+util_spec = 'linear'            # utility u(y) = y
+n = 100
+wage_grid = np.linspace(0, 1, n)
+prob_grid = np.array([1/n] * n)
+
+model_unif = MyMcCallModel(
+    alpha=alpha,
+    beta=beta,
+    gamma=gamma,
+    b=b,
+    wage_grid=wage_grid,
+    prob_grid=prob_grid,
+    util_spec=util_spec
+)
+
+w_res_unif = model_unif.compute_reservation_wage()
+print(w_res_unif)
+
+
+# Create an instance of the model with log-logistic wage distribution
+alph_shape = 1
+beta_shape = 20
+wage_grid_log = np.linspace(0, 10, n)
+prob_grid_log = log_logistics_pdf(wage_grid_log, alph_shape, beta_shape)
+print(sum(wage_grid_log * prob_grid_log))
+model_log = MyMcCallModel(
+    wage_grid=wage_grid_log,
+    prob_grid=prob_grid_log
+)
+
+w_res_log = model_log.compute_reservation_wage()
+print(w_res_log)
