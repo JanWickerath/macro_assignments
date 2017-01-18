@@ -4,8 +4,6 @@ My implementation of a McCall model class.
 """
 
 import numpy as np
-from numba import jit
-from quantecon.distributions import BetaBinomial
 
 
 # Definition of my McCall model class
@@ -43,7 +41,6 @@ class MyMcCallModel:
             self.wage_grid = wage_grid
             self.prob_grid = prob_grid
 
-
     def _utility(self, cons, sigma, util_spec):
         """
         CRRA utility function.
@@ -59,7 +56,6 @@ class MyMcCallModel:
             else:
                 return (cons**(1 - sigma) - 1) / (1 - sigma)
 
-
     def get_utility(self, cons):
         """
         Return the utility of the agent in the current instance of the model
@@ -67,7 +63,6 @@ class MyMcCallModel:
 
         """
         return self._utility(cons, self.sigma, self.util_spec)
-
 
     def _update_bellman(self, V_e, V_u):
         """
@@ -82,12 +77,11 @@ class MyMcCallModel:
                                           self.alpha * V_u)
 
         V_u_new = self.get_utility(self.b) + \
-                  self.beta * (1 - self.gamma) * V_u + \
-                  self.beta * self.gamma * \
-                  np.sum(np.maximum(V_e, V_u) * self.prob_grid)
+            self.beta * (1 - self.gamma) * V_u + \
+            self.beta * self.gamma * \
+            np.sum(np.maximum(V_e, V_u) * self.prob_grid)
 
         return V_e_new, V_u_new
-
 
     def solve(self, tol=1e-5, max_iter=2000):
         """
@@ -110,7 +104,6 @@ class MyMcCallModel:
             count += 1
 
         return V_e, V_u
-
 
     def compute_reservation_wage(self):
         """
