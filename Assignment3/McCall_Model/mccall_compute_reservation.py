@@ -8,6 +8,7 @@ import numpy as np
 import scipy.integrate as integrate
 from my_mccall_model import MyMcCallModel
 
+
 def log_logistics_pdf(x, alpha, beta):
     """
     Return the pdf of a log logistical distribution with shape parameters
@@ -17,6 +18,7 @@ def log_logistics_pdf(x, alpha, beta):
 
     return ((beta / alpha) * (x / alpha)**(beta - 1)) / \
         (1 + (x / alpha)**beta)**2
+
 
 def log_logistics_quant(x, alpha, beta):
     """
@@ -41,7 +43,7 @@ def log_logistics_quant(x, alpha, beta):
 # plt.legend()
 # plt.show()
 
-## Different iterative procedure to calculate the reservation wage_grid
+# Different iterative procedure to calculate the reservation wage_grid
 def e_max_w(pdf, pdfargs, w_bar, w_up=1, w_down=0):
     pr_wbar = integrate.quad(
         lambda w: pdf(w, *pdfargs), w_down, w_bar
@@ -52,20 +54,23 @@ def e_max_w(pdf, pdfargs, w_bar, w_up=1, w_down=0):
     print("Expected wage offer is :" + str(pr_wbar + exp_w_bar))
     return pr_wbar + exp_w_bar
 
+
 def unif_pdf(x, a, b):
     return 1/(b - a)
+
 
 def update_rw(w0, pdf, pdfargs, b, beta, w_up=1, w_down=0):
     e_wage_offer = e_max_w(pdf, pdfargs, w0, w_up, w_down)
     w_new = b * (1 - beta) + beta * e_wage_offer
     return w_new
 
+
 def iter_res_w(w0, pdf, pdfargs, b, beta, w_up=1, w_down=0,
                tol=1e-5, max_iter=200000):
     count = 0
     error = tol + 1
 
-    while error > tol:# and count > max_iter:
+    while error > tol:  # and count > max_iter:
         w_new = update_rw(w0, pdf, pdfargs, b, beta)
         error = np.abs(w_new - w0)
         w0 = w_new
@@ -73,7 +78,8 @@ def iter_res_w(w0, pdf, pdfargs, b, beta, w_up=1, w_down=0,
 
     return w0
 
-## example
+
+# example
 w0 = 0
 b = .02
 beta = .96
