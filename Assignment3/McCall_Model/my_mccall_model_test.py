@@ -40,7 +40,6 @@ class TestMyMcCall(unittest.TestCase):
             true_sol[1]
         )
 
-
     def test_solve_model_uniform_wages(self):
         n = 100
         wage_grid = np.linspace(10, 20, n)
@@ -64,7 +63,6 @@ class TestMyMcCall(unittest.TestCase):
             true_sol[1]
         )
 
-
     def test_compute_reservation_wage(self):
         n = 100
         wage_grid = np.linspace(0, 1, n)
@@ -85,9 +83,6 @@ class TestMyMcCall(unittest.TestCase):
         )
         res_wage = model.compute_reservation_wage()
         self.assertAlmostEqual(res_wage, .827661731378)
-
-
-
 
 
 if __name__ == '__main__':
