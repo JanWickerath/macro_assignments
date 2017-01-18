@@ -1,12 +1,11 @@
 """
 Compute reservation wage of a given instance of a McCallModel.
-
 """
 
 
 import numpy as np
 import scipy.integrate as integrate
-from my_mccall_model import MyMcCallModel
+# from my_mccall_model import MyMcCallModel
 
 
 def log_logistics_pdf(x, alpha, beta):
@@ -51,8 +50,7 @@ def e_max_w(pdf, pdfargs, w_bar, w_up=1, w_down=0):
     exp_w_bar = integrate.quad(
         lambda w: w * pdf(w, *pdfargs), w_bar, w_up
     )[0]
-    print("Expected wage offer is :" + str(pr_wbar + exp_w_bar))
-    return pr_wbar + exp_w_bar
+    return w_bar * pr_wbar + exp_w_bar
 
 
 def unif_pdf(x, a, b):
@@ -81,7 +79,7 @@ def iter_res_w(w0, pdf, pdfargs, b, beta, w_up=1, w_down=0,
 
 # example
 w0 = 0
-b = .02
+b = .4
 beta = .96
 res_wage = iter_res_w(
     w0=w0, pdf=unif_pdf, pdfargs=[0, 1], b=b, beta=beta, w_up=10
