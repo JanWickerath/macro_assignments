@@ -33,11 +33,13 @@ class MyBewleyModel():
         return self.state_dist
 
     def avg_labor_sup(self):
+        """Store and return the average labor supply of the economy."""
+
         self.avg_labor = sum(self.stoch_states * self.state_dist)
         return self.avg_labor
 
-    def _utility(self):
-        pass
+    def _utility(self, wage, prod_shock, r, a, a_prime):
+        return np.log(wage*prod_shock + (1 + r) * a - a_prime)
 
     def _solve(self):
         pass
