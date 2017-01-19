@@ -29,6 +29,13 @@ class TestMyBewleyModel(unittest.TestCase):
             stationary, true_sol, decimal=3
         )
 
+    def test_avg_labor_supply(self):
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1, n_stoch=2, nsup_low=.2, nsup_up=1
+        )
+        bewley.get_stat_states()
+        self.assertAlmostEqual(bewley.avg_labor_sup(), .6)
+
 
 if __name__ == '__main__':
     unittest.main()
