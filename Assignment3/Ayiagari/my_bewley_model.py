@@ -10,8 +10,24 @@ from scipy.stats import norm
 
 class MyBewleyModel():
     """docstring for MyBewleyModel."""
-    def __init__(self, r=.02):
-        pass
+    def __init__(self, r, rho, sigma, n_stoch=2, nsup_low=.2, nsup_up=1):
+        self.r = r
+        self.stoch_trans, self.stoch_states = tauchen(
+            rho, sigma, n=n_stoch, sup_low=nsup_low, sup_up=nsup_up
+        )
+
+    def get_stat_states(self):
+        """
+        Return the stationary distribution of stochastic states in this model
+        instance.
+        Compute the stationary distribution of the stochastic states computed
+        by the eigenvector of the stochastic transition matrix
+        *self.stoch_trans*.
+
+        """
+        stat_dist = np.array([[]])
+        eig_val, eig_vec = np.linalg.eig(self.stoch_trans)
+        return eig_vec[:, 0]/sum(eig_vec[:, 0])
 
     def _utility(self):
         pass
