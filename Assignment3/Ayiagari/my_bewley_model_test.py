@@ -24,9 +24,9 @@ class TestMyBewleyModel(unittest.TestCase):
             r=.02, rho=.5, sigma=1, n_stoch=2, nsup_low=.2, nsup_up=1
         )
         stationary = bewley.get_stat_states()
-        true_sol = np.array([[.70710678, -.4961909]])
+        true_sol = np.array([.5, .5])
         np.testing.assert_array_almost_equal(
-            stationary, true_sol
+            stationary, true_sol, decimal=3
         )
 
 
