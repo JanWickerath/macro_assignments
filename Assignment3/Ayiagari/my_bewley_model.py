@@ -15,6 +15,7 @@ class MyBewleyModel():
         self.stoch_trans, self.stoch_states = tauchen(
             rho, sigma, n=n_stoch, sup_low=nsup_low, sup_up=nsup_up
         )
+        self.state_dist = []
 
     def get_stat_states(self):
         """
@@ -27,7 +28,8 @@ class MyBewleyModel():
         """
         stat_dist = np.array([[]])
         eig_val, eig_vec = np.linalg.eig(self.stoch_trans)
-        return eig_vec[:, 0]/sum(eig_vec[:, 0])
+        self.state_dist = eig_vec[:, 0]/sum(eig_vec[:, 0])
+        return self.state_dist
 
     def _utility(self):
         pass
