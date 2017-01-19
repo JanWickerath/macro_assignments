@@ -21,7 +21,7 @@ class TestMyBewleyModel(unittest.TestCase):
 
     def test_stationary_stoch_states(self):
         bewley = MyBewleyModel(
-            r=.02, rho=.5, sigma=1, n_stoch=2, nsup_low=.2, nsup_up=1
+            r=.02, rho=.5, sigma=1
         )
         stationary = bewley.get_stat_states()
         true_sol = np.array([.5, .5])
@@ -31,7 +31,7 @@ class TestMyBewleyModel(unittest.TestCase):
 
     def test_avg_labor_supply(self):
         bewley = MyBewleyModel(
-            r=.02, rho=.5, sigma=1, n_stoch=2, nsup_low=.2, nsup_up=1
+            r=.02, rho=.5, sigma=1
         )
         bewley.get_stat_states()
         self.assertAlmostEqual(bewley.avg_labor_sup(), .6)
