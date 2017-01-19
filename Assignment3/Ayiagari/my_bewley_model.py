@@ -16,6 +16,7 @@ class MyBewleyModel():
             rho, sigma, n=n_stoch, sup_low=nsup_low, sup_up=nsup_up
         )
         self.state_dist = []
+        self.avg_labor = None
 
     def get_stat_states(self):
         """
@@ -30,6 +31,10 @@ class MyBewleyModel():
         eig_val, eig_vec = np.linalg.eig(self.stoch_trans)
         self.state_dist = eig_vec[:, 0]/sum(eig_vec[:, 0])
         return self.state_dist
+
+    def avg_labor_sup(self):
+        self.avg_labor = sum(self.stoch_states * self.state_dist)
+        return self.avg_labor
 
     def _utility(self):
         pass
