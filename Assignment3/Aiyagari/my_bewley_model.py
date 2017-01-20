@@ -73,3 +73,32 @@ def tauchen(rho, sigma, n=2, sup_low=0.2, sup_up=1):
 
     # Return state vector and transition matrix
     return transit, states
+
+def transistor(pol, transit):
+    """Compute transition matrix of state space for stochastic shocks and
+    assets.
+
+    """
+    pass
+
+def value_iter(asset_grid, state_grid, state_trans):
+    """Implement value function iteration. Return value function and policy
+    function.
+
+    """
+
+    # Let n be the length of the asset grid and m the length of the state
+    # grid. For m states define nX1 vectors v_j whose ith rows are determined
+    # by v_j(i) = v(a_i, s_j) , j=1,...,m, i=1,...,n.
+
+    # Create a vector of nX1 ones.
+
+    # Define j nXn matrices R_j whose (i, h) elements are given by
+    # R_j(i, h) = u((r + 1) a_i + w*s_j - a_h) , i=1,...,n , h=1,...,n
+
+    # Define the Bellman operator T([v_1, v_2]) that maps a pair of nX1 vectors
+    # [v_1, v_2] into a pair of nX1 vectors [tv_1, tv_2] such that:
+    # tv_j(i) = max_h {R_j(i, h) + beta*sum_k(Pi_{jk}*v_k(h))}
+
+    # Iterate over the bellman operator until convergence
+    pass
