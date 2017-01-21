@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from my_bewley_model import tauchen
+from my_bewley_model import MyBewleyModel, tauchen
 
 
 class TestMyBewleyModel(unittest.TestCase):
@@ -18,6 +18,23 @@ class TestMyBewleyModel(unittest.TestCase):
         for idx in range(len(transit)):
             row_sums.append(sum(transit[idx]))
         self.assertEqual(row_sums, [1, 1, 1])
+
+    def test_stationary_stoch_states(self):
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1
+        )
+        stationary = bewley.get_stat_states()
+        true_sol = np.array([.5, .5])
+        np.testing.assert_array_almost_equal(
+            stationary, true_sol, decimal=3
+        )
+
+    def test_avg_labor_supply(self):
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1
+        )
+        bewley.get_stat_states()
+        self.assertAlmostEqual(bewley.avg_labor_sup(), .6)
 
 
 if __name__ == '__main__':
