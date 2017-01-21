@@ -7,7 +7,31 @@ and Maussner (2009).
 import numpy as np
 
 
-def value_iter_deter():
+def value_iter_deter(state_grid, reward_fun, beta, tol=1e-8):
+    """Docstring for deterministic value function iteration."""
+    # Denote length of the state grid with n
+
+    # Initialize first guess of value function to vector of zeros with length
+    # n.
+
+    # Initialize distance to infinity
+
+    # While distance is larger then tolerance
+
+        # Initialize vector of new values v_new of length n.
+
+        # Loop over indices (idx) of v_new
+            # Compute
+            # _bin_search_opt(reward_fun(state, state_grid)) + beta * v(idx)
+            # and assign the result to v_new(idx)
+
+        # Compute the distance between v_new and v
+
+        # If the distance is smaller then tolerance terminate and return v_new
+
+        # Else start over again
+
+
     pass
 
 def _bin_search_opt(fun, sup_grid):
