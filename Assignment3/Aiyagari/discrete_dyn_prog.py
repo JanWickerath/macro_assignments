@@ -14,6 +14,15 @@ def value_iter_deter(state_grid, reward_fun, beta, tol=1e-8):
     # Initialize first guess of value function to vector of zeros with length
     # n.
 
+    # Initialize nXn array *util_mat* to compute utility levels for different
+    # state-choice combinations.
+
+    # Loop over rows of util_mat
+
+        # Loop over cols of util_mat
+
+            # Set util_mat(row,col)=reward_fun(state_grid(row),state_grid(col))
+
     # Initialize distance to infinity
 
     # While distance is larger then tolerance
@@ -21,8 +30,9 @@ def value_iter_deter(state_grid, reward_fun, beta, tol=1e-8):
         # Initialize vector of new values v_new of length n.
 
         # Loop over indices (idx) of v_new
+
             # Compute
-            # _bin_search_opt(reward_fun(state, state_grid)) + beta * v(idx)
+            # _bin_search_opt(util_mat[:, idx] + beta * v[idx]
             # and assign the result to v_new(idx)
 
         # Compute the distance between v_new and v
