@@ -14,7 +14,7 @@ class TestMyBewleyModel(unittest.TestCase):
         fmax = 20
         f_imax = 10
         self.assertEqual(
-            ddp._bin_search_opt(test_fun, x), (fmax, f_imax)
+            ddp._bin_search_opt(test_fun(x), x), (fmax, f_imax)
         )
 
     def test_bin_search_opt_linear_fun_dec(self):
@@ -24,7 +24,7 @@ class TestMyBewleyModel(unittest.TestCase):
         fmax = 0
         f_imax = 0
         self.assertEqual(
-            ddp._bin_search_opt(test_fun, x), (fmax, f_imax)
+            ddp._bin_search_opt(test_fun(x), x), (fmax, f_imax)
         )
 
     def test_bin_search_opt_quadr_fun(self):
@@ -35,7 +35,7 @@ class TestMyBewleyModel(unittest.TestCase):
         fmax = 0
         f_imax = 2
         self.assertEqual(
-            ddp._bin_search_opt(test_fun, x), (fmax, f_imax)
+            ddp._bin_search_opt(test_fun(x), x), (fmax, f_imax)
         )
 
 
