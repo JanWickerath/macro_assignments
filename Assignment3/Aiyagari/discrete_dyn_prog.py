@@ -5,44 +5,58 @@ and Maussner (2009).
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
-
-def value_iter_deter(state_grid, reward_fun, beta, tol=1e-8):
+def value_iter_deter(state_grid, reward_fun, beta, prod=.5, tol=1e-8):
     """Docstring for deterministic value function iteration."""
     # Denote length of the state grid with n
-
+    n = len(state_grid)
     # Initialize first guess of value function to vector of zeros with length
     # n.
+    v = np.zeros(n)
+    pol = np.zeros(n)
 
     # Initialize nXn array *util_mat* to compute utility levels for different
     # state-choice combinations.
+    util_mat = np.array([[np.nan] * n] * n)
 
     # Loop over rows of util_mat
-
+    for row_idx in range(n):
         # Loop over cols of util_mat
+        for col_idx in range(n):
+            # Calculate consumption if state is state[row] and choice is
+            # state[col]
+            cons = prod * state_grid[row_idx]**(.5) - state_grid[col_idx]
 
-            # Set util_mat(row,col)=reward_fun(state_grid(row),state_grid(col))
+            # Set
+            # util_mat(row,col)=reward_fun(state_grid(row),state_grid(col))
+            util_mat[row_idx, col_idx] = reward_fun(cons)
 
     # Initialize distance to infinity
+    dist = np.inf
 
     # While distance is larger then tolerance
+    while dist > tol:
 
         # Initialize vector of new values v_new of length n.
+        v_new = np.array([np.nan] * n)
 
         # Loop over indices (idx) of v_new
+        for idx in range(n):
 
             # Compute
             # _bin_search_opt(util_mat[:, idx] + beta * v[idx]
             # and assign the result to v_new(idx)
+            v_new[idx], pol[idx] = _bin_search_opt(util_mat[:, idx] + beta *
+                                                   v[idx], k)
 
         # Compute the distance between v_new and v
+        dist = np.linalg.norm(v_new - v)
 
-        # If the distance is smaller then tolerance terminate and return v_new
+        v = v_new
 
-        # Else start over again
+    return v_new, pol
 
-
-    pass
 
 def _bin_search_opt(fun, sup_grid):
     """Find the maximum of a strictly concave function *fun* defined over a
@@ -74,3 +88,26 @@ def _bin_search_opt(fun, sup_grid):
         return fun[int(idx_min + 1)], sup_grid[int(idx_min + 1)]
     else:
         return fun[int(idx_max)], sup_grid[int(idx_max)]
+
+
+k = np.linspace(1/100, 1/9, 10)
+z = .5
+beta = .5
+def util(cons):
+    if cons > 0:
+        return np.log(cons)
+    else:
+        return -np.inf
+
+value, pol = value_iter_deter(state_grid=k, reward_fun=util, beta=beta, prod=z)
+
+plt.figure()
+plt.subplot(1, 2, 1)
+plt.plot(k, value)
+plt.title('Value function')
+
+plt.subplot(1, 2, 2)
+plt.plot(k, pol)
+plt.title('policy function')
+
+plt.show()
