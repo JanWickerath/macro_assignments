@@ -160,16 +160,22 @@ def transistor(pol_idx, transit):
 
     """
     # Initialize transition matrix of zeros of size n*m-by-n*m
+    n = len(pol_idx[:, 0])
+    m = len(pol_idx[0, :])
+    state_trans = np.zeros([n*m, n*m])
 
     # Loop over all rows in the trainsition matrix
-
+    for row_idx in range(n*m):
         # Check the optimal policy. To do so go to the policy function at row
         # position row_idx//m (m denotes the number of stochastic states and
         # '//' is integer division) and column position row_idx%m. Store the
         # policy (in terms of the index in the choice vector that returns the
-        # optimal choice) as opt_col_idx.
-
+        # optimal choice) as opt_pol_idx.
+        opt_pol_idx = pol_idx[row_idx//m, row_idx%m]
         # Fill the current row from position opt_col_idx*m to (opt_col_idx*m +
         # m - 1) with values from stoch_trans[row_idx%m, :]
+        state_trans[
+            row_idx, (opt_pol_idx*m):(opt_pol_idx*m + m)
+        ] = transit[row_idx%m, :]
 
-    pass
+    return state_trans
