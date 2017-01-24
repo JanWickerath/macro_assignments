@@ -78,6 +78,51 @@ class TestMyBewleyModel(unittest.TestCase):
             trans, true_sol
         )
 
+    def test_create_transition(self):
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1, assets=np.array([0, 1, 2])
+        )
+        bewley.pol_idx = np.array([
+            [0, 1],
+            [1, 1],
+            [1, 2]
+        ])
+        bewley.stoch_trans = np.array([
+            [.7, .3],
+            [.4, .6]
+        ])
+        true_sol = np.array([
+            [.7, .3, 0, 0, 0, 0],
+            [0, 0, .4, .6, 0, 0],
+            [0, 0, .7, .3, 0, 0],
+            [0, 0, .4, .6, 0, 0],
+            [0, 0, .7, .3, 0, 0],
+            [0, 0, 0, 0, .4, .6]
+        ])
+        trans = bewley._create_transition()
+        np.testing.assert_array_equal(
+            trans, true_sol
+        )
+
+    def test_compute_stat_dist(self):
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1, assets=np.array([0, 1, 2])
+        )
+        bewley.pol_idx = np.array([
+            [0, 1],
+            [1, 1],
+            [1, 2]
+        ])
+        bewley.stoch_trans = np.array([
+            [.7, .3],
+            [.4, .6]
+        ])
+        bewley._create_transition()
+        np.testing.assert_array_equal(
+            bewley._compute_stat_dist(), np.array([0, 1., 0])
+        )
+
+
 
 if __name__ == '__main__':
     unittest.main()
