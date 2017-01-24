@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import matplotlib.pyplot as plt
 from my_bewley_model import MyBewleyModel, tauchen
 
 
@@ -21,7 +22,7 @@ class TestMyBewleyModel(unittest.TestCase):
 
     def test_stationary_stoch_states(self):
         bewley = MyBewleyModel(
-            r=.02, rho=.5, sigma=1
+            r=.02, rho=.5, sigma=1, assets=np.array([0, 1, 2])
         )
         stationary = bewley.get_stat_states()
         true_sol = np.array([.5, .5])
@@ -31,10 +32,28 @@ class TestMyBewleyModel(unittest.TestCase):
 
     def test_avg_labor_supply(self):
         bewley = MyBewleyModel(
-            r=.02, rho=.5, sigma=1
+            r=.02, rho=.5, sigma=1, assets=np.array([0, 1, 2])
         )
         bewley.get_stat_states()
         self.assertAlmostEqual(bewley.avg_labor_sup(), .6)
+
+    def test_solve_visually(self):
+        assets=np.linspace(0, 30, 100)
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1, assets=assets
+        )
+        v, pol = bewley._solve(1)
+
+        plt.figure()
+        plt.subplot(1, 2, 1)
+        plt.plot(assets, v)
+        plt.title('Value function')
+
+        plt.subplot(1, 2, 2)
+        plt.plot(assets, pol)
+        plt.title('Policy function')
+
+        plt.show()
 
 
 if __name__ == '__main__':

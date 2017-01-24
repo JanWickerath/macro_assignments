@@ -10,13 +10,17 @@ from scipy.stats import norm
 
 class MyBewleyModel():
     """docstring for MyBewleyModel."""
-    def __init__(self, r, rho, sigma, n_stoch=2, nsup_low=.2, nsup_up=1):
+    def __init__(self, r, rho, sigma, assets, beta=.98, n_stoch=2,
+                 nsup_low=.2, nsup_up=1):
         self.r = r
         self.stoch_trans, self.stoch_states = tauchen(
             rho, sigma, n=n_stoch, sup_low=nsup_low, sup_up=nsup_up
         )
         self.state_dist = []
         self.avg_labor = None
+
+        self.assets = assets
+        self.beta = beta
 
     def get_stat_states(self):
         """
@@ -27,7 +31,6 @@ class MyBewleyModel():
         *self.stoch_trans*.
 
         """
-        stat_dist = np.array([[]])
         eig_val, eig_vec = np.linalg.eig(self.stoch_trans)
         self.state_dist = eig_vec[:, 0]/sum(eig_vec[:, 0])
         return self.state_dist
@@ -38,11 +41,59 @@ class MyBewleyModel():
         self.avg_labor = sum(self.stoch_states * self.state_dist)
         return self.avg_labor
 
-    def _utility(self, wage, prod_shock, r, a, a_prime):
-        return np.log(wage*prod_shock + (1 + r) * a - a_prime)
+    def _utility(self, cons):
+        return np.log(cons)
 
-    def _solve(self):
-        pass
+    def _solve(self, wage, tol=1e-5):
+        """Implement value function iteration approach to solve for the value
+        function and the policy function of the household.
+
+        """
+        # Initialize v to n-by-m array where n is the length of the asset grid
+        # and m the length of the stochastic grid.
+        n = len(self.assets)
+        m = len(self.stoch_states)
+        v = np.zeros([n, m])
+
+        # Compute consumption matrix and utility matrix
+        a_prime, prod, a = np.meshgrid(
+            self.assets,
+            self.stoch_states,
+            self.assets
+        )
+        cons_mat = wage * prod + (1 + self.r) * a - a_prime
+
+        util_mat = self._utility(cons_mat)
+        util_mat[cons_mat <= 0] = -np.inf
+
+        # Iterate over value function
+        dist = 1
+
+        while dist > tol:
+            # Compute the expected value
+            ex_val = v @ np.transpose(self.stoch_trans)
+
+            # Initialize v_new and policy function
+            v_new = np.zeros([n, m])
+            pol = np.zeros([n, m])
+
+            for idx in range(m):
+                v_new[:, idx] = np.amax(
+                    util_mat[idx, :, :] +
+                    self.beta * np.array([ex_val[:, idx]] * n), 1
+                )
+                pol[:, idx] = self.assets[
+                    np.argmax(
+                    util_mat[idx, :, :] +
+                    self.beta * np.array([ex_val[:, idx]] * n), 1
+                    )
+                ]
+
+            dist = np.linalg.norm(v_new - v)
+
+            v = np.copy(v_new)
+
+        return v, pol
 
     def _create_transition(self):
         pass
