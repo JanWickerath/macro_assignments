@@ -22,6 +22,14 @@ class MyBewleyModel():
         self.assets = assets
         self.beta = beta
 
+        # Initialize vfi and pol
+        self.val_fun = np.zeros([len(assets), n_stoch])
+        self.pol_fun = np.zeros([len(assets), n_stoch])
+        self.pol_idx = np.zeros([len(assets), n_stoch])
+
+        self.state_trans = np.zeros([len(assets)*n_stoch, len(assets)*n_stoch])
+
+
     def get_stat_states(self):
         """
         Return the stationary distribution of stochastic states in this model
@@ -31,7 +39,7 @@ class MyBewleyModel():
         *self.stoch_trans*.
 
         """
-        eig_val, eig_vec = np.linalg.eig(self.stoch_trans)
+        eig_val, eig_vec = np.linalg.eig(np.transpose(self.stoch_trans))
         self.state_dist = eig_vec[:, 0]/sum(eig_vec[:, 0])
         return self.state_dist
 
@@ -76,6 +84,7 @@ class MyBewleyModel():
             # Initialize v_new and policy function
             v_new = np.zeros([n, m])
             pol = np.zeros([n, m])
+            pol_idx = np.zeros([n, m])
 
             for idx in range(m):
                 v_new[:, idx] = np.amax(
@@ -88,18 +97,59 @@ class MyBewleyModel():
                     self.beta * np.array([ex_val[:, idx]] * n), 1
                     )
                 ]
+                pol_idx[:, idx] = np.argmax(
+                    util_mat[idx, :, :] +
+                    self.beta * np.array([ex_val[:, idx]] * n), 1
+                )
 
             dist = np.linalg.norm(v_new - v)
 
             v = np.copy(v_new)
 
+        self.val_fun = v
+        self.pol_fun = pol
+        self.pol_idx = pol_idx
         return v, pol
 
     def _create_transition(self):
-        pass
+        """Compute transition matrix of state space for stochastic shocks and
+        assets.
+
+        """
+        # Initialize transition matrix of zeros of size n*m-by-n*m
+        n = len(self.pol_idx[:, 0])
+        m = len(self.pol_idx[0, :])
+
+        # Loop over all rows in the trainsition matrix
+        for row_idx in range(n*m):
+            # Check the optimal policy. To do so go to the policy function at
+            # row position row_idx//m (m denotes the number of stochastic
+            # states and '//' is integer division) and column position
+            # row_idx%m. Store the policy (in terms of the index in the choice
+            # vector that returns the optimal choice) as opt_pol_idx.
+            opt_pol_idx = self.pol_idx[row_idx//m, row_idx%m]
+            # Fill the current row from position opt_col_idx*m to
+            # (opt_col_idx*m + m - 1) with values from stoch_trans[row_idx%m,
+            # :]
+            self.state_trans[
+                row_idx, (opt_pol_idx*m):(opt_pol_idx*m + m)
+            ] = self.stoch_trans[row_idx%m, :]
+
+        return self.state_trans
 
     def _compute_stat_dist(self):
-        pass
+        eig_val, eig_vec = np.linalg.eig(np.transpose(self.state_trans))
+        # Select unit eigenvector and normalize so that it adds up to 1
+        inter_stat = eig_vec[:, eig_val==1] / sum(eig_vec[:, eig_val==1])
+        # Reshape vector to a matrix, so that sum over the columns will give
+        # the stationary asset distribution.
+        inter_stat = inter_stat.reshape((len(self.assets),
+                                         len(self.stoch_states)))
+        # Sum up over columns
+        self.stat_assets = np.sum(inter_stat, axis=1)
+
+        return self.stat_assets
+
 
     def _aggregates(self):
         pass
