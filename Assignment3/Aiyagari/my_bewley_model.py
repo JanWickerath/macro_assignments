@@ -154,9 +154,22 @@ def tauchen(rho, sigma, n=2, sup_low=0.2, sup_up=1):
     # Return state vector and transition matrix
     return transit, states
 
-def transistor(pol, transit):
+def transistor(pol_idx, transit):
     """Compute transition matrix of state space for stochastic shocks and
     assets.
 
     """
+    # Initialize transition matrix of zeros of size n*m-by-n*m
+
+    # Loop over all rows in the trainsition matrix
+
+        # Check the optimal policy. To do so go to the policy function at row
+        # position row_idx//m (m denotes the number of stochastic states and
+        # '//' is integer division) and column position row_idx%m. Store the
+        # policy (in terms of the index in the choice vector that returns the
+        # optimal choice) as opt_col_idx.
+
+        # Fill the current row from position opt_col_idx*m to (opt_col_idx*m +
+        # m - 1) with values from stoch_trans[row_idx%m, :]
+
     pass
