@@ -152,7 +152,7 @@ class MyBewleyModel():
 
 
     def _aggregates(self):
-        pass
+        self.asset_supply = sum(self.stat_assets * self.assets)
 
 
 def tauchen(rho, sigma, n=2, sup_low=0.2, sup_up=1):

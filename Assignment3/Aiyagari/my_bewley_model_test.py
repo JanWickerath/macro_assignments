@@ -122,6 +122,14 @@ class TestMyBewleyModel(unittest.TestCase):
             bewley._compute_stat_dist(), np.array([0, 1., 0])
         )
 
+    def test_create_transition_large(self):
+        bewley = MyBewleyModel(
+            r=.02, rho=.5, sigma=1, assets=np.linspace(0, 30, 100), n_stoch=32
+        )
+        bewley._solve(1)
+        print(np.sum(bewley._create_transition(), axis=1))
+
+
 
 
 if __name__ == '__main__':
