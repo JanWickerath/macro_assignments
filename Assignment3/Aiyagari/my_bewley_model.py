@@ -168,6 +168,9 @@ class MyBewleyModel():
     def _aggregates(self):
         self.asset_supply = sum(self.stat_assets * self.assets)
 
+    def get_asset_supply(self):
+        return self.asset_supply
+
     def solve_model(self):
         self._comp_stat_states()
         self._comp_avg_labor_sup()
