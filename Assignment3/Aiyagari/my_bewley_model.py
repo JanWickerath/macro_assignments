@@ -45,16 +45,18 @@ class MyBewleyModel():
     def get_stat_states(self):
         return self.state_dist
 
-    def avg_labor_sup(self):
+    def _comp_avg_labor_sup(self):
         """Store and return the average labor supply of the economy."""
 
         self.avg_labor = sum(self.stoch_states * self.state_dist)
+
+    def get_avg_lab_sup(self):
         return self.avg_labor
 
     def _utility(self, cons):
         return np.log(cons)
 
-    def _solve(self, wage, tol=1e-5):
+    def _vfi(self, tol=1e-5):
         """Implement value function iteration approach to solve for the value
         function and the policy function of the household.
 
@@ -71,7 +73,7 @@ class MyBewleyModel():
             self.stoch_states,
             self.assets
         )
-        cons_mat = wage * prod + (1 + self.r) * a - a_prime
+        cons_mat = self.wage * prod + (1 + self.r) * a - a_prime
 
         util_mat = self._utility(cons_mat)
         util_mat[cons_mat <= 0] = -np.inf
@@ -137,6 +139,7 @@ class MyBewleyModel():
                 row_idx, (opt_pol_idx*m):(opt_pol_idx*m + m)
             ] = self.stoch_trans[row_idx%m, :]
 
+    def get_transition(self):
         return self.state_trans
 
     def _compute_stat_dist(self):
@@ -158,7 +161,7 @@ class MyBewleyModel():
     def solve_model(self):
         self._comp_stat_states()
         self.avg_labor_sup()
-        self._solve(self.wage)
+        self._vfi()
         self._create_transition()
         self._compute_stat_dist()
         self._aggregates()

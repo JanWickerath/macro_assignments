@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from my_bewley_model import MyBewleyModel, tauchen, transistor
 
 
@@ -36,25 +36,26 @@ class TestMyBewleyModel(unittest.TestCase):
         bewley = MyBewleyModel(
             r=.02, rho=.5, sigma=1, assets=np.array([0, 1, 2])
         )
-        bewley.get_stat_states()
-        self.assertAlmostEqual(bewley.avg_labor_sup(), .6)
+        bewley._comp_stat_states()
+        bewley._comp_avg_labor_sup()
+        self.assertAlmostEqual(bewley.get_avg_lab_sup(), .6)
 
     # def test_solve_visually(self):
     #     assets=np.linspace(0, 30, 100)
     #     bewley = MyBewleyModel(
     #         r=.02, rho=.5, sigma=1, assets=assets
     #     )
-    #     v, pol = bewley._solve(1)
-
+    #     v, pol = bewley._vfi()
+    #
     #     plt.figure()
     #     plt.subplot(1, 2, 1)
     #     plt.plot(assets, v)
     #     plt.title('Value function')
-
+    #
     #     plt.subplot(1, 2, 2)
     #     plt.plot(assets, pol)
     #     plt.title('Policy function')
-
+    #
     #     plt.show()
 
     def test_transistor_3states_2shocks(self):
@@ -101,9 +102,9 @@ class TestMyBewleyModel(unittest.TestCase):
             [0, 0, .7, .3, 0, 0],
             [0, 0, 0, 0, .4, .6]
         ])
-        trans = bewley._create_transition()
+        bewley._create_transition()
         np.testing.assert_array_equal(
-            trans, true_sol
+            bewley.get_transition(), true_sol
         )
 
     def test_compute_stat_dist(self):
