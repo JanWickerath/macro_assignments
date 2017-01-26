@@ -113,7 +113,12 @@ class MyBewleyModel():
         self.val_fun = v
         self.pol_fun = pol
         self.pol_idx = pol_idx
-        return v, pol
+
+    def get_pol(self):
+        return self.pol_fun, self.pol_idx
+
+    def get_val(self):
+        return self.val_fun
 
     def _create_transition(self):
         """Compute transition matrix of state space for stochastic shocks and
@@ -144,8 +149,12 @@ class MyBewleyModel():
 
     def _compute_stat_dist(self):
         eig_val, eig_vec = np.linalg.eig(np.transpose(self.state_trans))
+        print(eig_val)
+        pass
         # Select unit eigenvector and normalize so that it adds up to 1
-        inter_stat = eig_vec[:, eig_val==1] / sum(eig_vec[:, eig_val==1])
+        inter_stat = eig_vec[:, np.isclose(eig_val, 1)] / \
+            sum(eig_vec[:, np.isclose(eig_val, 1)])
+        print("inter_stat = ", sum(inter_stat))
         # Reshape vector to a matrix, so that sum over the columns will give
         # the stationary asset distribution.
         inter_stat = inter_stat.reshape((len(self.assets),
@@ -161,7 +170,7 @@ class MyBewleyModel():
 
     def solve_model(self):
         self._comp_stat_states()
-        self.avg_labor_sup()
+        self._comp_avg_labor_sup()
         self._vfi()
         self._create_transition()
         self._compute_stat_dist()
