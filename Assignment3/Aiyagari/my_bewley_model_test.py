@@ -121,8 +121,9 @@ class TestMyBewleyModel(unittest.TestCase):
             [.4, .6]
         ])
         bewley._create_transition()
+        bewley._compute_stat_dist()
         np.testing.assert_array_equal(
-            bewley._compute_stat_dist(), np.array([0, 1., 0])
+            bewley.get_stat_assets(), np.array([0, 1., 0])
         )
 
     def test_create_transition_large(self):

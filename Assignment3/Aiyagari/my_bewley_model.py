@@ -153,6 +153,7 @@ class MyBewleyModel():
         # Sum up over columns
         self.stat_assets = np.sum(inter_stat, axis=1)
 
+    def get_stat_assets(self):
         return self.stat_assets
 
     def _aggregates(self):
