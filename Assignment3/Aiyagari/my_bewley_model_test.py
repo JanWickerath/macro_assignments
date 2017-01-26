@@ -130,10 +130,9 @@ class TestMyBewleyModel(unittest.TestCase):
         bewley = MyBewleyModel(
             r=.02, rho=.5, sigma=1, assets=np.linspace(0, 30, 100), n_stoch=32
         )
-        bewley._solve(1)
-        print(np.sum(bewley._create_transition(), axis=1))
-
-
+        bewley._vfi()
+        bewley._create_transition()
+        print(np.sum(bewley.get_transition(), axis=1))
 
 
 if __name__ == '__main__':
