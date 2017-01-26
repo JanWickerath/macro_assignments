@@ -35,7 +35,7 @@ bewley_large.solve_model()
 
 
 # Plot distribution of assets
-plt.figure()
+fig = plt.figure()
 plt.subplot(1, 2, 1)
 plt.plot(assets, bewley_small.get_stat_assets())
 plt.title('2 Stochastic states')
@@ -43,4 +43,7 @@ plt.title('2 Stochastic states')
 plt.subplot(1, 2, 2)
 plt.plot(assets, bewley_large.get_stat_assets())
 plt.title('32 Stochastic states')
-plt.show()
+
+plt.tight_layout()
+
+fig.savefig('figures/asset_distribution.pdf')
