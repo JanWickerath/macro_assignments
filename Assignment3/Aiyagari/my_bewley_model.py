@@ -10,10 +10,9 @@ from scipy.stats import norm
 
 class MyBewleyModel():
     """docstring for MyBewleyModel."""
-    def __init__(self, r, rho, sigma, assets, wage=1, beta=.98, n_stoch=2,
-                 nsup_low=.2, nsup_up=1):
+    def __init__(self, r, rho, sigma, assets, beta=.98,
+                 n_stoch=2, nsup_low=.2, nsup_up=1, alpha=.5, delta=.05):
         self.r = r
-        self.wage = wage
         self.stoch_trans, self.stoch_states = tauchen(
             rho, sigma, n=n_stoch, sup_low=nsup_low, sup_up=nsup_up
         )
@@ -22,6 +21,8 @@ class MyBewleyModel():
 
         self.assets = assets
         self.beta = beta
+        self.alpha = alpha
+        self.delta = delta
 
         # Initialize vfi and pol
         self.val_fun = np.zeros([len(assets), n_stoch])
@@ -49,6 +50,8 @@ class MyBewleyModel():
         """Store and return the average labor supply of the economy."""
 
         self.avg_labor = sum(self.stoch_states * self.state_dist)
+        self.wage = (1 - self.alpha) * (self.alpha / (self.r + self.delta))**(
+            self.alpha/(1 - self.alpha))
 
     def get_avg_lab_sup(self):
         return self.avg_labor
@@ -149,12 +152,9 @@ class MyBewleyModel():
 
     def _compute_stat_dist(self):
         eig_val, eig_vec = np.linalg.eig(np.transpose(self.state_trans))
-        print(eig_val)
-        pass
         # Select unit eigenvector and normalize so that it adds up to 1
         inter_stat = eig_vec[:, np.isclose(eig_val, 1)] / \
             sum(eig_vec[:, np.isclose(eig_val, 1)])
-        print("inter_stat = ", sum(inter_stat))
         # Reshape vector to a matrix, so that sum over the columns will give
         # the stationary asset distribution.
         inter_stat = inter_stat.reshape((len(self.assets),
