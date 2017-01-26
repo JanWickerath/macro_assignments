@@ -10,9 +10,10 @@ from scipy.stats import norm
 
 class MyBewleyModel():
     """docstring for MyBewleyModel."""
-    def __init__(self, r, rho, sigma, assets, beta=.98, n_stoch=2,
+    def __init__(self, r, rho, sigma, assets, wage=1, beta=.98, n_stoch=2,
                  nsup_low=.2, nsup_up=1):
         self.r = r
+        self.wage = wage
         self.stoch_trans, self.stoch_states = tauchen(
             rho, sigma, n=n_stoch, sup_low=nsup_low, sup_up=nsup_up
         )
@@ -29,8 +30,7 @@ class MyBewleyModel():
 
         self.state_trans = np.zeros([len(assets)*n_stoch, len(assets)*n_stoch])
 
-
-    def get_stat_states(self):
+    def _comp_stat_states(self):
         """
         Return the stationary distribution of stochastic states in this model
         instance.
@@ -41,6 +41,8 @@ class MyBewleyModel():
         """
         eig_val, eig_vec = np.linalg.eig(np.transpose(self.stoch_trans))
         self.state_dist = eig_vec[:, 0]/sum(eig_vec[:, 0])
+
+    def get_stat_states(self):
         return self.state_dist
 
     def avg_labor_sup(self):
@@ -150,9 +152,16 @@ class MyBewleyModel():
 
         return self.stat_assets
 
-
     def _aggregates(self):
         self.asset_supply = sum(self.stat_assets * self.assets)
+
+    def solve_model(self):
+        self._comp_stat_states()
+        self.avg_labor_sup()
+        self._solve(self.wage)
+        self._create_transition()
+        self._compute_stat_dist()
+        self._aggregates()
 
 
 def tauchen(rho, sigma, n=2, sup_low=0.2, sup_up=1):
@@ -229,3 +238,6 @@ def transistor(pol_idx, transit):
         ] = transit[row_idx%m, :]
 
     return state_trans
+
+def aggregate_demand(r, labor, alpha, delta):
+    return labor * (alpha / (r + delta))**(1/(1 - alpha))

@@ -24,6 +24,8 @@ class TestMyBewleyModel(unittest.TestCase):
         bewley = MyBewleyModel(
             r=.02, rho=.5, sigma=1, assets=np.array([0, 1, 2])
         )
+        # bewley.solve_model()
+        bewley._comp_stat_states()
         stationary = bewley.get_stat_states()
         true_sol = np.array([.5, .5])
         np.testing.assert_array_almost_equal(
