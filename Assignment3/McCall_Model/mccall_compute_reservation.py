@@ -28,19 +28,8 @@ def log_logistics_quant(x, alpha, beta):
 
     return alpha * (x / (1 - x))**(1 / beta)
 
-
-# Test log_logistics_pdf visually
-# import matplotlib.pyplot as plt
-# alpha = 1
-# beta_grid = [.5, 1, 2, 4, 8]
-# x = np.linspace(0.05, 3, 1000)
-#
-# for beta in beta_grid:
-#     x_pdf = log_logistics_pdf(x, alpha, beta)
-#     plt.plot(x, x_pdf, label=str(beta))
-#
-# plt.legend()
-# plt.show()
+def unif_pdf(x, a, b):
+    return 1/(b - a)
 
 # Different iterative procedure to calculate the reservation wage_grid
 def e_max_w(pdf, pdfargs, w_bar, w_up=1, w_down=0):
@@ -51,11 +40,6 @@ def e_max_w(pdf, pdfargs, w_bar, w_up=1, w_down=0):
         lambda w: w * pdf(w, *pdfargs), w_bar, w_up
     )[0]
     return w_bar * pr_wbar + exp_w_bar
-
-
-def unif_pdf(x, a, b):
-    return 1/(b - a)
-
 
 def update_rw(w0, pdf, pdfargs, b, beta, w_up=1, w_down=0):
     e_wage_offer = e_max_w(pdf, pdfargs, w0, w_up, w_down)
@@ -76,7 +60,6 @@ def iter_res_w(w0, pdf, pdfargs, b, beta, w_up=1, w_down=0,
 
     return w0
 
-
 # example
 w0 = 0
 b = .4
@@ -91,42 +74,3 @@ res_wage_log = iter_res_w(
     w_up=10, w_down=0
 )
 print(res_wage_log)
-
-
-# Create instance of a model with uniform wage distribution
-# alpha = 0                       # No risk of losing a job
-# beta = 0.98                     # Standard discount factor
-# gamma = 1                       # Get a job offer every period
-# b = 0.1                         # Unemployment benefits
-# util_spec = 'linear'            # utility u(y) = y
-# n = 100
-# wage_grid = np.linspace(0, 1, n)
-# prob_grid = np.array([1/n] * n)
-
-# model_unif = MyMcCallModel(
-#     alpha=alpha,
-#     beta=beta,
-#     gamma=gamma,
-#     b=b,
-#     wage_grid=wage_grid,
-#     prob_grid=prob_grid,
-#     util_spec=util_spec
-# )
-
-# w_res_unif = model_unif.compute_reservation_wage()
-# print(w_res_unif)
-
-
-# # Create an instance of the model with log-logistic wage distribution
-# alph_shape = 1
-# beta_shape = 20
-# wage_grid_log = np.linspace(0, 10, n)
-# prob_grid_log = log_logistics_pdf(wage_grid_log, alph_shape, beta_shape)
-# print(sum(wage_grid_log * prob_grid_log))
-# model_log = MyMcCallModel(
-#     wage_grid=wage_grid_log,
-#     prob_grid=prob_grid_log
-# )
-
-# w_res_log = model_log.compute_reservation_wage()
-# print(w_res_log)
