@@ -92,9 +92,9 @@ def supply_demand_plot():
     plt.legend()
     plt.xlim(xmax=30)
     plt.tight_layout()
-    # fig.savefig('figures/supply_demand_plot.pdf')
+    fig.savefig('figures/supply_demand_plot.pdf')
     plt.show()
 
 # Solve the exercise.
 plot_asset_dist()
-# supply_demand_plot()
+supply_demand_plot()
