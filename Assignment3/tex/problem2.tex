@@ -1,0 +1,176 @@
+
+\section*{Problem 2: McCall Job Search model}
+\label{problem2}
+
+\paragraph{a.}
+
+A Worker has period utility $u(y) = y$, where $y$ is the period income. He can
+either be employed at wage $w$ or unemployed in which case he receives
+unemployment benefits $b$. If he is employed he receives $w$ forever,
+i.e. he has no risk of losing his job and cannot search for a new job
+while employed. If he is unemployed he receives $b$ today and is offered a job
+with wage $w$ from the nex period onward. The wage offer $w$ is a random draw
+from some known probability distribution.
+
+Given the structure described above the households indirect lifetime utility
+when employed at wage $w$ can be written recursively as
+\begin{equation}
+  \label{eq:value_employed}
+  V_e(w) = u(w) + \beta V_e(w)
+\end{equation}
+and when unemployed as
+\begin{equation}
+  \label{eq:value_unemp}
+  V_u = u(b) + \beta \mathbb{E} \left[\max \{V_u, V_e(w)\} \right]
+\end{equation}
+Note that we can rewrite equation \eqref{eq:value_employed} as 
+\begin{align}
+\label{eq:V_e}
+  V_e(w) (1 - \beta) &= u(w) \nonumber\\ 
+  V_e(w) &= \frac{u(w)}{1 - \beta}
+\end{align}
+Now we can combine \eqref{eq:value_unemp} and \eqref{eq:V_e} to recursively
+write the value of a job offer in period $t$ $J_t(w)$ as
+\begin{equation}
+\label{eq:bellman}
+  J_{t}(w) = \max \left\{ \frac{u(w)}{1 - \beta}, u(b) + \beta \mathbb{E}
+    \left[J_{t+1}(w)\right] \right\}
+\end{equation}
+Obviously the optimal solution for the worker is to accept all offers for which
+it holds that 
+\begin{equation*}
+  V_e(w) \geq V_u = u(b) + \beta \mathbb{E} \left[J(w)\right]
+\end{equation*}
+where $J(w)$ is the functional fixed point in equation \eqref{eq:bellman}. If
+it holds with with equality it implicitly defines the wage level $\bar{w}$ at
+which the worker is indifferent between accepting the offer and rejecting
+it. This wage is called ``reservation wage''. So for the specified utility
+function it follows that
+\begin{equation}
+\label{eq:res_wage}
+  \frac{\bar{w}}{1 - \beta} = b + \beta \mathbb{E} \left[J(w)\right]
+\end{equation}
+From the definition of the wage offer it follows immediately that
+\begin{align*}
+  J(w) &= 
+  \begin{cases}
+    \frac{w}{1 - \beta}~ \text{if}~w > \bar{w} \\
+    \frac{\bar{w}}{1 - \beta}~\text{if}~w \leq \bar{w}
+  \end{cases}\\
+  \implies  \mathbb{E} \left[J(w)\right] &= \mathbb{E} \left[ \max \left\{\frac{w}{1 -
+  \beta}, \frac{\bar{w}}{1 - \beta}  \right\}\right] \\
+  &= \frac{1}{1 - \beta} \mathbb{E} \left[ \max \left\{w, \bar{w} \right\} \right]
+\end{align*}
+Plugging this into equation \eqref{eq:res_wage} we get that
+\begin{align}
+\label{eq:wage_bellman}
+  \frac{\bar{w}}{1 - \beta} &= b + \frac{\beta}{1 - \beta} \mathbb{E} [\max(w,
+                              \bar{w})] \nonumber\\
+                    \bar{w} &= (1 - \beta) b + \beta \mathbb{E} [\max (w, \bar{w})]
+\end{align}
+Note that we can rewrite the expectation operator above as
+\begin{align*}
+  \mathbb{E} \max[w, \bar{w}] &= \bar{w}~P(w \leq \bar{w}) + \mathbb{E} [w | w >
+                                \bar{w}] \\
+                              &= \bar{w} \int_0^{\bar{w}} f(w) dw + \int_{\bar{w}}^{w^{\text{Daron}}} w f(w) dw
+\end{align*}
+We can now find the reservation wage as a fixed point by iteratively using the
+right hand side of equation \eqref{eq:wage_bellman} and characterising the
+expectation as above. This procedure can be applied because the operator on the
+right hand side is a contraction and according to the contraction mapping
+theorem it has a unique fixed point that can be reached iteratively from any
+arbitrary starting guess for $\bar{w}$.
+
+\paragraph{b.}
+
+\newtheorem{claim}{Claim}
+\begin{claim}
+  Let $X$ be the interval $(0, w^{\text{Daron}})$ and let
+  $J:~X \to X$ be some bounded function. Let $b$ and $\beta$ be
+  parameters such that $b \in \mathbb{R}_+$ and $\beta \in (0, 1)$. Then the
+  operator $T$ defined by $T(J(w)) = \max \left[ \frac{w}{1 - \beta}, b +
+    \beta \mathbb{E} \left(J(w)\right)\right]$ has a unique fixed point in the
+  space of bounded functions.
+\end{claim}
+\begin{proof}
+  Denote the space of bounded function by $\mathbb{B(X)}$. To
+  establish that $T$ has a unique fixed points we need to show that it is a
+  contraction. Once that is established the Contraction mapping theorem
+  immediately gives the result. To proof that it is indeed a contraction we can
+  refer to Blackwell's sufficient conditions, which state that it suffices to
+  show that $T$ fullfills two conditions, monotonicity and discounting. 
+
+  First show monotonicity: Take two arbitrary functions $f$ and $g$ in
+  $\mathbb{B}$ such that, without loss of generality, $f(x) \leq g(x)~\forall x
+  \in X$. Assume by contradiction that
+  \begin{align*}
+    (Tf)(w) &> (Tg)(w) \\
+    \implies \max \left[\frac{w}{1 - \beta}, b + \beta \mathbb{E}(f(w))\right]
+            &> \max \left[\frac{w}{1 - \beta}, b + \beta \mathbb{E}(g(w))\right]
+  \end{align*}
+  First look at the case where the value of being employed $\frac{w}{1 -
+    \beta}$ is lower than being unemployed in both cases. Then the above
+  immediately implies that
+  \begin{align*}
+    b + \beta \mathbb{E}(f(w)) &> b + \beta \mathbb{E}(g(w)) \\
+    \iff \mathbb{E}(f(w)) &> \mathbb{E}(g(w))
+  \end{align*}
+  which contradicts the assumption that $f>g~\forall x$. If instead the the
+  value of being employed is larger than being unemployed in both cases. In
+  this case it obviously holds that $(Tf)(w) = (Tg)(w)$ which is also a
+  contradiction. As it also holds that $\mathbb{E}(f(w)) \leq \mathbb{E}(g(w))$
+  it cannot be that the value of being employed is higher then the value of
+  being unemployed under the function $g$ but not under $f$. So the assumption
+  that $(Tf)(w) > (Tg)(w)$ can never hold and hence the operator $T$ fulfills
+  monotonicity.
+
+  Second look whether it also fulfills discounting: Take some arbitrary $a \geq
+  0,~w \in X,~f \in \mathbb{B}$.
+  \begin{align*}
+    \left[T(f + a)\right] (w) &= \max \left[ \frac{w}{1 - \beta}, b + \beta
+                                \mathbb{E} (f(w) + a)\right] \\
+                              &= \max \left[ \frac{w}{1 - \beta}, b + \beta
+                                \mathbb{E} \left[f(w)\right] + \beta a\right]
+  \end{align*}
+  Now take the following two cases:
+  \begin{enumerate}
+  \item
+    \begin{align*}
+      \frac{w}{1 - \beta} > b + \beta \mathbb{E} \left[f(w)\right] + \beta a
+      \geq b + \beta \mathbb{E} \left[f(w)\right] \\
+      \implies \left[T(f + a)\right] (w) = \frac{w}{1 - \beta} \leq \frac{w}{1
+      - \beta} + \beta a = (Tf)(w) + \beta a
+    \end{align*}
+  \item
+    \begin{align*}
+      \frac{w}{1 - \beta} \leq b + \beta \mathbb{E} \left[f(w)\right] + \beta a
+      \\
+      \implies \left[T(f + a)\right](w) = b + \beta \mathbb{E} \left[f(w)\right] + \beta a
+    \end{align*}
+    \begin{enumerate}
+    \item
+      \begin{align*}
+        \frac{w}{1 - \beta} < b + \beta \mathbb{E} \left[f(w)\right] + \beta a
+        \\
+        \implies (Tf)(w) + \beta a = b + \beta \mathbb{E} \left[f(w)\right] +
+        \beta a = \left[T(f + a)\right](w)
+      \end{align*}
+    \item
+      \begin{align*}
+        \frac{w}{1 - \beta} \geq b + \beta \mathbb{E} \left[f(w)\right] \\
+        \implies (Tf)(w) + \beta a = \frac{w}{1 - \beta} + \beta a \\
+        \geq b + \beta \mathbb{E} \left[f(w)\right] + \beta a \\
+        = \left[T(f + a)\right] (w)
+      \end{align*}
+    \end{enumerate}
+  \end{enumerate}
+  Hence in all possible cases $T$ fulfills discounting and therefore we know
+  that it is a contraction and has a unique fixed point in $\mathbb{B}$ that
+  can be reached iteratively from every arbitrary bounded function in
+  $\mathbb{B}$. 
+\end{proof}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "Assignment3_main"
+%%% End:
